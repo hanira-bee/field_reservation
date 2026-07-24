@@ -7,15 +7,42 @@
     /* default font */
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    /* font untuk judul */
+    /* font untuk logo (h1) */
+    --font-stack: 'Stack Sans Notch', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* font untuk judul (h2) */
     --font-prompt: 'Prompt', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    /* font untuk detail */
+    /* font untuk subjudul (h3) */
+    --font-elma: 'Elma Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* font untuk detail (p) */
     --font-roboto: 'Roboto', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    /* font untuk button */
+    /* font untuk button (btn) */
     --font-rubik: 'Rubik', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    /* font untuk logo */
-    --font-stack: 'Stack Sans Notch', sans-serif;
+
+}
+
+/* Mengatur font otomatis untuk setiap tag HTML menggunakan variabel Tailwind v4 */
+h1 {
+    font-family: var(--font-stack);
+}
+
+h2 {
+    font-family: var(--font-prompt);
+}
+
+h3 {
+    font-family: var(--font-elma);
+}
+
+p {
+    font-family: var(--font-roboto);
+}
+
+button,
+.btn {
+    font-family: var(--font-rubik);
 }

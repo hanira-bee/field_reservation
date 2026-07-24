@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Controller Pelanggan
+use App\Http\Controllers\Pelanggan\HomeController;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');

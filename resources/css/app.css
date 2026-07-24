@@ -4,6 +4,18 @@
 @source '../../storage/framework/views/*.php';
 
 @theme {
+    /* default font */
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    /* font untuk judul */
+    --font-prompt: 'Prompt', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* font untuk detail */
+    --font-roboto: 'Roboto', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* font untuk button */
+    --font-rubik: 'Rubik', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* font untuk logo */
+    --font-stack: 'Stack Sans Notch', sans-serif;
 }

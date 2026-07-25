@@ -26,29 +26,37 @@
             </div>
 
             @php
-                $activeClass = 'bg-red-50 text-red-700 font-bold shadow-sm';
-                $normalClass = 'text-gray-600 hover:bg-gray-100 font-semibold';
+            $activeClass = 'bg-red-50 text-red-700 font-bold shadow-sm';
+            $normalClass = 'text-gray-600 hover:bg-gray-100 font-semibold';
             @endphp
 
             <nav class="flex-1 px-3 sm:px-4 space-y-1 sm:space-y-2">
                 <a href="{{ route('home') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('home') ? $activeClass : $normalClass }}">
                     <i class="fas fa-chart-pie text-sm sm:text-base w-5 sm:w-6 text-center"></i>
-                    <span class="text-sm sm:text-base"><h2>Beranda</h2></span>
+                    <span class="text-sm sm:text-base">
+                        <h2>Beranda</h2>
+                    </span>
                 </a>
 
                 <a href="#" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('lapangan.*') ? $activeClass : $normalClass }}">
                     <i class="fas fa-table-cells text-sm sm:text-base w-5 sm:w-6 text-center"></i>
-                    <span class="text-sm sm:text-base"><h2>Lapangan</h2></span>
+                    <span class="text-sm sm:text-base">
+                        <h2>Lapangan</h2>
+                    </span>
                 </a>
 
                 <a href="#" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('reservasi.*') ? $activeClass : $normalClass }}">
                     <i class="fas fa-calendar-check text-sm sm:text-base w-5 sm:w-6 text-center"></i>
-                    <span class="text-sm sm:text-base"><h2>Reservasi</h2></span>
+                    <span class="text-sm sm:text-base">
+                        <h2>Reservasi</h2>
+                    </span>
                 </a>
 
                 <a href="#" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('kontak.*') ? $activeClass : $normalClass }}">
                     <i class="fas fa-envelope text-sm sm:text-base w-5 sm:w-6 text-center"></i>
-                    <span class="text-sm sm:text-base"><h2>Kontak Kami</h2></span>
+                    <span class="text-sm sm:text-base">
+                        <h2>Kontak Kami</h2>
+                    </span>
                 </a>
             </nav>
         </aside>
@@ -69,7 +77,7 @@
                         <span class="font-stack font-extrabold text-red-800 text-xs sm:text-sm md:text-base lg:text-lg">SM SPORT CENTER</span>
                     </a>
                 </div>
-                
+
                 <!-- /* --------------------------------- NAVBAR --------------------------------- */ -->
                 <nav class="font-prompt hidden md:flex items-center gap-2 sm:gap-3">
                     <a href="{{ route('home') }}" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Beranda</a>
@@ -87,8 +95,63 @@
 
             <!-- KONTEN PELANGGAN -->
             <div class="w-full flex-1">
+
                 @yield('content')
+
+                <!-- /* --------------------------------- FOOTER --------------------------------- */ -->
+                <footer class="bg-red-600 text-white font-sans">
+                    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 items-start border-b border-red-500">
+                        <div class="flex flex-col space-y-4 relative min-h-[180px]">
+                            <h1 class="text-3xl font-extrabold tracking-wider uppercase z-20 relative">SM SPORT CENTER</h1>
+                            <div class="absolute bottom-0 left-0 w-48 h-48 z-10 pointer-events-none opacity-15 overflow-hidden">
+                                <i class="fas fa-volleyball text-white text-[12rem] leading-none"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col space-y-4">
+                            <h2 class="text-xl font-bold tracking-wide">Tentang Kami</h2>
+                            <p class="text-red-100 text-sm leading-relaxed antialiased">
+                                SM Sport Center adalah platform reservasi lapangan olahraga premium terbaik untuk bulu tangkis dan futsal, baik arena indoor maupun outdoor. Pesan slot jadwal Anda secara online dengan mudah, cepat, dan aman sebelum kehabisan.
+                            </p>
+                            <a href="#" class="inline-block w-fit text-center bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-md text-sm tracking-wide transform hover:scale-105 transition-all duration-105 ease-in-out shadow-md">
+                                PESAN SEKARANG
+                            </a>
+                        </div>
+
+                        <div class="flex flex-col space-y-4">
+                            <h2 class="text-xl font-bold tracking-wide">Kontak Kami</h2>
+                            <div class="space-y-2 text-sm text-red-100">
+                                <div class="flex items-center gap-2 group cursor-pointer w-fit">
+                                    <span class="material-icons text-lg transition-transform group-hover:scale-110">
+                                        <h3 class="text-base">Email</h3>
+                                    </span>
+                                    <p class="hover:underline">support@sportcenter.com</p>
+                                </div>
+                                <div class="flex items-center gap-2 group cursor-pointer w-fit">
+                                    <span class="material-icons text-lg transition-transform group-hover:scale-110">
+                                        <h3 class="text-base">Telepon</h3>
+                                    </span>
+                                    <p class="hover:underline">+62 812-3456-7890</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 pt-2">
+                                <a href="#" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
+                                    <i class="fab fa-facebook-f text-sm"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
+                                    <i class="fab fa-twitter text-sm"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
+                                    <i class="fab fa-instagram text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>
+
+
         </main>
     </div>
 

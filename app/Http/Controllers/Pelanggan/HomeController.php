@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Pelanggan;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Lapangan;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('pelanggan.home');
+        $lapangans = Lapangan::query()
+            ->where('status_aktif', true)
+            ->orderBy('nama_lapangan')
+            ->get();
+
+        return view('pelanggan.home', compact('lapangans'));
     }
 }

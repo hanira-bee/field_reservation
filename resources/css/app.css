@@ -46,3 +46,34 @@ button,
 .btn {
     font-family: var(--font-rubik);
 }
+
+/* Responsif untuk layout pelanggan */
+body {
+    overflow-x: hidden;
+}
+
+main {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    #overlay {
+        display: none !important;
+    }
+
+    main {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    #sidebar {
+        width: 16rem;
+    }
+
+    header {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

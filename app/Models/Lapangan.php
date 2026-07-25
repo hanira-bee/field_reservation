@@ -11,9 +11,15 @@ class Lapangan extends Model
         'jenis_lapangan',
         'lokasi',
         'harga_per_jam',
+        'deskripsi',
         'fasilitas',
         'status_aktif',
     ];
+
+    protected $casts = [
+        'status_aktif' => 'boolean',
+    ];
+
     public function reservasi()
     {
         return $this->hasMany(Reservasi::class);

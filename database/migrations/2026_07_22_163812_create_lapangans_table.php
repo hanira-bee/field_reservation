@@ -16,11 +16,10 @@ return new class extends Migration
             $table->string('nama_lapangan');
             $table->string('jenis_lapangan');
             $table->string('lokasi');
-            $table->decimal('harga_per_jam',10,2);
+            $table->decimal('harga_per_jam', 10, 2);
+            $table->text('deskripsi')->nullable();
             $table->text('fasilitas')->nullable();
             $table->boolean('status_aktif')->default(true);
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
             $table->timestamps();
         });
     }

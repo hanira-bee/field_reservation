@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use Carbon\Carbon;
 use App\Models\Lapangan;
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class LapanganSeeder extends Seeder
 {
@@ -14,60 +13,62 @@ class LapanganSeeder extends Seeder
      */
     public function run(): void
     {
-        Lapangan::insert(
+        Lapangan::insert([
             [
-                [
-                    'nama_lapangan' => 'Lapangan Futsal Indoor',
-                    'jenis_lapangan' => 'Futsal',
-                    'lokasi' => 'Jl. Raya Olahraga No. 123, Kota ABC',
-                    'harga_per_jam' => 150000,
-                    'fasilitas' => 'Lampu sorot, ruang ganti, toilet, parkir',
-                    'status_aktif' => 1,
-                    'created_at' => Carbon::parse('2026-06-04 14:30:00'),
-                    'updated_at' => Carbon::now(),
-                ],
-                [
-                    'nama_lapangan' => 'Lapangan Futsal Outdoor',
-                    'jenis_lapangan' => 'Futsal',
-                    'lokasi' => 'Jl. Lapangan No. 456, Kota XYZ',
-                    'harga_per_jam' => 120000,
-                    'fasilitas' => 'Lampu sorot, ruang ganti, toilet, parkir',
-                    'status_aktif' => 1,
-                    'created_at' => Carbon::parse('2026-06-04 14:30:00'),
-                    'updated_at' => Carbon::now(),
-                ],
-                [
-                    'nama_lapangan' => 'Lapangan Badminton Indoor A',
-                    'jenis_lapangan' => 'Badminton',
-                    'lokasi' => 'Jl. Olahraga No. 789, Kota DEF',
-                    'harga_per_jam' => 80000,
-                    'fasilitas' => 'Lampu sorot, ruang ganti, toilet',
-                    'status_aktif' => 1,
-                    'created_at' => Carbon::parse('2026-06-04 14:30:00'),
-                    'updated_at' => Carbon::now(),
-                ],
-                [
-                    'nama_lapangan' => 'Lapangan Badminton Indoor B',
-                    'jenis_lapangan' => 'Badminton',
-                    'lokasi' => 'Jl. Olahraga No. 101, Kota GHI',
-                    'harga_per_jam' => 90000,
-                    'fasilitas' => 'Lampu sorot, ruang ganti, toilet',
-                    'status_aktif' => 1,
-                    'created_at' => Carbon::parse('2026-06-04 14:30:00'),
-                    'updated_at' => Carbon::now(),
-                ],
-                [
-                    'nama_lapangan' => 'Lapangan Badminton Outdoor',
-                    'jenis_lapangan' => 'Badminton',
-                    'lokasi' => 'Jl. Olahraga No. 202, Kota JKL',
-                    'harga_per_jam' => 100000,
-                    'fasilitas' => 'Lampu sorot, ruang ganti, toilet, parkir',
-                    'status_aktif' => 1,
-                    'created_at' => Carbon::parse('2026-06-04 14:30:00'),
-                    'updated_at' => Carbon::now(),
-                ]
-                
-            ]
-        );
+                'nama_lapangan' => 'Lapangan Futsal Outdoor',
+                'jenis_lapangan' => 'Futsal',
+                'lokasi' => 'Jl. Raya Olahraga No. 123, Kota ABC',
+                'harga_per_jam' => 130000,
+                'deskripsi' => 'Lapangan futsal dengan rumput sintetis, berada di ruang terbuka dengan jaring pembatas dan lampu sorot agar mendukung pencahayaan yang baik ketika permainan dimulai.',
+                'fasilitas' => 'Lampu sorot, ruang ganti, toilet, parkir',
+                'status_aktif' => true,
+                'created_at' => Carbon::parse('2026-06-04 14:30:00'),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nama_lapangan' => 'Lapangan Futsal Indoor',
+                'jenis_lapangan' => 'Futsal',
+                'lokasi' => 'Jl. Lapangan No. 456, Kota XYZ',
+                'harga_per_jam' => 150000,
+                'deskripsi' => 'Rumput sintetis yang empuk, meminimalisir risiko cedera. Berada di dalam ruang, cocok untuk latihan atau turnamen di cuaca tidak menentu.',
+                'fasilitas' => 'Lampu sorot, ruang ganti, toilet, parkir',
+                'status_aktif' => true,
+                'created_at' => Carbon::parse('2026-06-04 14:30:00'),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nama_lapangan' => 'Lapangan Badminton Outdoor',
+                'jenis_lapangan' => 'Badminton',
+                'lokasi' => 'Jl. Olahraga No. 789, Kota DEF',
+                'harga_per_jam' => 60000,
+                'deskripsi' => 'Fasilitas lapangan dengan area terbuka yang nyaman, pagar jaring yang mengelilingi lapangan dengan lantai semen untuk membuat gerakan semakin lincah dan gesit.',
+                'fasilitas' => 'Lampu sorot, ruang ganti, toilet',
+                'status_aktif' => true,
+                'created_at' => Carbon::parse('2026-06-04 14:30:00'),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nama_lapangan' => 'Lapangan Badminton Indoor 1',
+                'jenis_lapangan' => 'Badminton',
+                'lokasi' => 'Jl. Olahraga No. 101, Kota GHI',
+                'harga_per_jam' => 50000,
+                'deskripsi' => 'Lantai karpet sintetis yang empuk dan lampu sorot dengan pencahayaan yang baik sebagai tempat yang nyaman untuk bermain badminton.',
+                'fasilitas' => 'Lampu sorot, ruang ganti, toilet',
+                'status_aktif' => true,
+                'created_at' => Carbon::parse('2026-06-04 14:30:00'),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nama_lapangan' => 'Lapangan Badminton Indoor 2',
+                'jenis_lapangan' => 'Badminton',
+                'lokasi' => 'Jl. Olahraga No. 202, Kota JKL',
+                'harga_per_jam' => 55000,
+                'deskripsi' => 'Lapangan indoor dengan permukaan lantai polos yang memberikan kebebasan bergerak serta kelincahan kaki anda.',
+                'fasilitas' => 'Lampu sorot, ruang ganti, toilet, parkir',
+                'status_aktif' => true,
+                'created_at' => Carbon::parse('2026-06-04 14:30:00'),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
     }
 }

@@ -15,10 +15,10 @@
             Bangun kesehatan dan gaya hidupmu dengan fasilitas modern dan pengalaman terbaik.
         </p>
         <div class="mt-6 flex flex-wrap justify-center gap-4">
-            <a href="#" class="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-800 transition">
+            <a href="#" class="btn px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-800 transition">
                 Mulai
             </a>
-            <a href="#" class="px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow hover:bg-gray-200 transition">
+            <a href="#" class="btn px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow hover:bg-gray-200 transition">
                 Pelajari
             </a>
         </div>
@@ -46,7 +46,7 @@
     </div>
 
     <div class="flex justify-center p-10">
-        <a href="#" class="animate-bounce hover:animate-none px-6 py-3 bg-white text-lg text-red-600 font-semibold rounded-full shadow border-2 border-red-100 transform hover:scale-110 transition-all duration-150 ease-in-out">
+        <a href="#" class="btn animate-bounce hover:animate-none px-6 py-3 bg-white text-lg text-red-600 font-semibold rounded-full shadow border-2 border-red-100 transform hover:scale-110 transition-all duration-150 ease-in-out">
             Reservasi
         </a>
     </div>
@@ -54,7 +54,7 @@
 
 <section class="bg-gray-50 h-fit w-full mx-auto py-16">
     <div class="text-center mb-12">
-        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-3">Pilihan Venue Terbaik Kami</h2>
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-3">Pilihan Lapangan Terbaik Kami</h2>
         <p class="text-md text-gray-500 font-normal max-w-xl mx-auto">
             Temukan dan pesan lapangan premium standar turnamen yang siap mendukung performa olahraga terbaik Anda.
         </p>
@@ -76,7 +76,7 @@
             <a href="#" class="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 ease-in-out flex flex-col">
                 <div class="relative overflow-hidden aspect-video">
                     <img src="{{ asset('images/' . $image) }}" alt="{{ $lapangan->nama_lapangan }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
-                    <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                    <span class="head2 absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
                         {{ $lapangan->jenis_lapangan }}
                     </span>
                 </div>
@@ -88,10 +88,10 @@
                         {{ $lapangan->deskripsi }}
                     </p>
                     <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-                        <span class="text-sm font-semibold text-emerald-600">
+                        <span class="head3 text-sm font-semibold text-emerald-600">
                             Rp {{ number_format($lapangan->harga_per_jam, 0, ',', '.') }} / Jam
                         </span>
-                        <span class="text-md font-bold text-red-600 flex items-center gap-1">Detail <span class="transform group-hover:translate-x-1 transition-transform">&rarr;</span></span>
+                        <span class="head3 text-md font-bold text-red-600 flex items-center gap-1">Detail <span class="transform group-hover:translate-x-1 transition-transform">&rarr;</span></span>
                     </div>
                 </div>
             </a>

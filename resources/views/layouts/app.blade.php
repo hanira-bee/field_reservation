@@ -38,21 +38,21 @@
                     </span>
                 </a>
 
-                <a href="#" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('lapangan.*') ? $activeClass : $normalClass }}">
+                <a href="{{ route('lapangan') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('lapangan') ? $activeClass : $normalClass }}">
                     <i class="fas fa-table-cells text-sm sm:text-base w-5 sm:w-6 text-center"></i>
                     <span class="text-sm sm:text-base">
                         <h2>Lapangan</h2>
                     </span>
                 </a>
 
-                <a href="#" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('reservasi.*') ? $activeClass : $normalClass }}">
+                <a href="{{ route('reservasi') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('reservasi') ? $activeClass : $normalClass }}">
                     <i class="fas fa-calendar-check text-sm sm:text-base w-5 sm:w-6 text-center"></i>
                     <span class="text-sm sm:text-base">
                         <h2>Reservasi</h2>
                     </span>
                 </a>
 
-                <a href="#" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('kontak.*') ? $activeClass : $normalClass }}">
+                <a href="{{ route('kontak') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('kontak') ? $activeClass : $normalClass }}">
                     <i class="fas fa-envelope text-sm sm:text-base w-5 sm:w-6 text-center"></i>
                     <span class="text-sm sm:text-base">
                         <h2>Kontak Kami</h2>
@@ -67,7 +67,7 @@
         <!-- /* ------------------------------- KONTEN HALAMAN ------------------------------- */ -->
         <main class="flex-1 flex flex-col min-h-screen overflow-y-auto relative z-10 w-full">
             <!-- /* --------------------------------- HEADER --------------------------------- */ -->
-            <header class="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-8 py-2 bg-white sticky top-0 z-30 shadow-sm">
+            <header class="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-8 py-2 sm:py-4 bg-white sticky top-0 z-30 shadow-sm">
                 <!-- logo -->
                 <div class="flex items-center gap-2 sm:gap-3">
                     <button class="p-1.5 sm:p-2 text-red-600 hover:bg-gray-100 rounded-lg md:hidden" onclick="toggleSidebar()">
@@ -80,16 +80,27 @@
 
                 <!-- /* --------------------------------- NAVBAR --------------------------------- */ -->
                 <nav class="font-prompt hidden md:flex items-center gap-2 sm:gap-3">
-                    <a href="{{ route('home') }}" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Beranda</a>
-                    <a href="#" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Lapangan</a>
-                    <a href="#" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Reservasi</a>
-                    <a href="#" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Kontak Kami</a>
+                    <a href="{{ route('home') }}" class="text-xs sm:text-sm md:text-base lg:text-lg {{ request()->routeIs('home') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-600' }}">Beranda</a>
+                    <a href="{{ route('lapangan') }}" class="text-xs sm:text-sm md:text-base lg:text-lg {{ request()->routeIs('lapangan') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-600' }}">Lapangan</a>
+                    <a href="{{ route('reservasi') }}" class="text-xs sm:text-sm md:text-base lg:text-lg {{ request()->routeIs('reservasi') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-600' }}">Reservasi</a>
+                    <a href="{{ route('kontak') }}" class="text-xs sm:text-sm md:text-base lg:text-lg {{ request()->routeIs('kontak') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-600' }}">Kontak Kami</a>
                 </nav>
 
                 <!-- login dan signup -->
                 <div class="font-rubik flex items-center gap-2 sm:gap-3 ml-auto md:ml-0">
-                    <a href="#" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Masuk</a>
-                    <a href="#" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm md:text-base lg:text-lg">Daftar</a>
+                    @auth
+                        <span class="text-sm text-gray-700">Halo, {{ Auth::user()->name }}</span>
+                        @if (Auth::user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Dashboard</a>
+                        @endif
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Keluar</button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Masuk</a>
+                        <a href="{{ route('register') }}" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm md:text-base lg:text-lg">Daftar</a>
+                    @endauth
                 </div>
             </header>
 

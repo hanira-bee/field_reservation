@@ -15,23 +15,33 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // User: Super Admin
+        User::create([
+            'name'  => 'Super Admin',
+            'email' => 'superadmin1@gmail.com',
+            'password' => Hash::make('superadmin123'),
+            'no_telepon' => '081234567890',
+            'tgl_daftar' => Carbon::parse('2026-06-04'),
+            'role' => 'superadmin',
+        ]);
+        
         // User: Admin
         User::create([
-            'nama' => 'Administrator',
+            'name' => 'Administrator',
             'email' => 'admin1@gmail.com',
             'password' => Hash::make('admin123'),
             'no_telepon' => '081234567890',
-            'tanggal_daftar' => Carbon::parse('2026-06-04'),
+            'tgl_daftar' => Carbon::parse('2026-06-04'),
             'role' => 'admin',
         ]);
 
         // User: Pelanggan
         User::create([
-            'nama' => 'Dimas',
+            'name' => 'Dimas',
             'email' => 'dimas@gmail.com',
             'no_telepon' => '081234567890',
             'password' => Hash::make('dimas123'),
-            'tanggal_daftar' => Carbon::parse('2026-06-04'),
+            'tgl_daftar' => Carbon::parse('2026-06-04'),
             'role' => 'pelanggan',
         ]);
     }

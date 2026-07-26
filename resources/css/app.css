@@ -26,15 +26,18 @@
 }
 
 /* Mengatur font otomatis untuk setiap tag HTML menggunakan variabel Tailwind v4 */
-h1 {
+h1,
+.head1 {
     font-family: var(--font-stack);
 }
 
-h2 {
+h2,
+.head2 {
     font-family: var(--font-prompt);
 }
 
-h3 {
+h3,
+.head3 {
     font-family: var(--font-elma);
 }
 

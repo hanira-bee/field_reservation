@@ -3,69 +3,81 @@
 @section('content')
 <section class="bg-white min-h-[70vh] px-6 py-16">
     <div class="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gray-50 p-8 shadow-sm">
+        
         <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Reservasi Lapangan</h1>
-                <p class="mt-3 text-gray-600">Tamu dapat mengisi data manual, sementara pelanggan yang sudah login akan melihat data profil terisi otomatis.</p>
+                <h1 class="text-3xl font-bold text-gray-900">Konfirmasi Reservasi</h1>
+                <p class="mt-1 text-sm text-gray-600">Data profil Anda terisi otomatis. Silakan periksa kembali detail pesanan Anda.</p>
             </div>
-            @auth
-                <span class="rounded-full bg-red-100 px-4 py-2 text-sm font-semibold text-red-700">Mode akun terautentikasi</span>
-            @else
-                <span class="rounded-full bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700">Mode tamu</span>
-            @endauth
+            <!-- Karena wajib login, status selalu terverifikasi -->
+            <span class="rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-check"></i> Akun Terverifikasi
+            </span>
         </div>
 
-        @if (session('success'))
-            <div class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
-                {{ session('success') }}
+        @if ($errors->any())
+            <div class="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                {{ $errors->first() }}
             </div>
         @endif
 
         <form method="POST" action="{{ route('reservasi.submit') }}" class="mt-8 grid gap-6 md:grid-cols-2">
             @csrf
 
+            <!-- 1. Nama Lengkap (Readonly/Disabled karena diambil dari database user) -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                <input name="nama" type="text" value="{{ old('nama', $defaultData['nama'] ?? '') }}" required class="w-full rounded-lg border border-gray-300 px-4 py-2">
+                <input type="text" value="{{ $defaultData['nama'] }}" disabled class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-500 cursor-not-allowed">
             </div>
 
+            <!-- 2. Email (Readonly) -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Email</label>
-                <input name="email" type="email" value="{{ old('email', $defaultData['email'] ?? '') }}" required class="w-full rounded-lg border border-gray-300 px-4 py-2">
+                <input type="email" value="{{ $defaultData['email'] }}" disabled class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-500 cursor-not-allowed">
             </div>
 
+            <!-- 3. Nomor Telepon (Readonly) -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Nomor Telepon</label>
-                <input name="no_telepon" type="text" value="{{ old('no_telepon', $defaultData['no_telepon'] ?? '') }}" required class="w-full rounded-lg border border-gray-300 px-4 py-2">
+                <input type="text" value="{{ $defaultData['no_telepon'] }}" disabled class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-500 cursor-not-allowed">
             </div>
 
+            <!-- 4. Pilihan Lapangan Dinamis -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Lapangan</label>
-                <select name="lapangan" required class="w-full rounded-lg border border-gray-300 px-4 py-2">
+                <select name="lapangan_id" required class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2">
                     <option value="">Pilih lapangan</option>
-                    <option value="Futsal Indoor" {{ old('lapangan') === 'Futsal Indoor' ? 'selected' : '' }}>Futsal Indoor</option>
-                    <option value="Badminton Indoor" {{ old('lapangan') === 'Badminton Indoor' ? 'selected' : '' }}>Badminton Indoor</option>
-                    <option value="Futsal Outdoor" {{ old('lapangan') === 'Futsal Outdoor' ? 'selected' : '' }}>Futsal Outdoor</option>
+                    @foreach($lapangans as $lap)
+                        <option value="{{ $lap->id }}" {{ old('lapangan_id', $defaultData['lapangan_id']) == $lap->id ? 'selected' : '' }}>
+                            {{ $lap->nama_lapangan }} (Rp {{ number_format($lap->harga_per_jam, 0, ',', '.') }} / Jam)
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
+            <!-- 5. Tanggal Main -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Tanggal</label>
-                <input name="tanggal" type="date" value="{{ old('tanggal') }}" required class="w-full rounded-lg border border-gray-300 px-4 py-2">
+                <input name="tanggal" type="date" value="{{ old('tanggal', $defaultData['tanggal']) }}" required class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2">
             </div>
 
+            <!-- 6. Sesi Jam (Readonly agar tidak bisa dimanipulasi teksnya) -->
             <div>
-                <label class="mb-1 block text-sm font-medium text-gray-700">Jam</label>
-                <input name="jam" type="text" value="{{ old('jam') }}" placeholder="Contoh: 19:00 - 20:00" required class="w-full rounded-lg border border-gray-300 px-4 py-2">
+                <label class="mb-1 block text-sm font-medium text-gray-700">Jam Sesi</label>
+                <input name="jam" type="text" value="{{ old('jam', $defaultData['jam']) }}" readonly required class="w-full rounded-lg border border-gray-300 bg-gray-200 px-4 py-2 font-mono font-bold text-red-600">
             </div>
 
+            <!-- 7. Catatan -->
             <div class="md:col-span-2">
-                <label class="mb-1 block text-sm font-medium text-gray-700">Catatan</label>
-                <textarea name="catatan" rows="4" class="w-full rounded-lg border border-gray-300 px-4 py-2" placeholder="Tambahkan catatan atau kebutuhan khusus Anda.">{{ old('catatan') }}</textarea>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Catatan Tambahan (Opsional)</label>
+                <textarea name="catatan" rows="4" class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2" placeholder="Tambahkan catatan khusus Anda (misal: sewa raket, rompi, dll.)">{{ old('catatan') }}</textarea>
             </div>
 
+            <!-- 8. Submit Button -->
             <div class="md:col-span-2">
-                <button type="submit" class="rounded-lg bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700">Kirim Reservasi</button>
+                <button type="submit" class="w-full md:w-auto rounded-lg bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700 transition">
+                    Kirim Permohonan Reservasi
+                </button>
             </div>
         </form>
     </div>

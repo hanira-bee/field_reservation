@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="relative overflow-hidden min-h-[70vh] h-screen text-white text-center">
+<section class="relative overflow-hidden min-h-[70vh] h-screen text-white text-center flex content-center justify-center">
     <div class="absolute inset-0">
         <img src="{{ asset('images/banner-home1.jpg') }}" alt="Sport Banner" class="fixed inset-0 w-full h-full object-cover -z-10">
         <div class="fixed inset-0 bg-black/40 -z-10"></div>
@@ -15,7 +15,7 @@
             Bangun kesehatan dan gaya hidupmu dengan fasilitas modern dan pengalaman terbaik.
         </p>
         <div class="mt-6 flex flex-wrap justify-center gap-4">
-            <a href="#" class="btn px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-800 transition">
+            <a href="{{ route('lapangan') }}" class="btn px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-800 transition">
                 Mulai
             </a>
             <a href="#" class="btn px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow hover:bg-gray-200 transition">
@@ -46,12 +46,13 @@
     </div>
 
     <div class="flex justify-center p-10">
-        <a href="#" class="btn animate-bounce hover:animate-none px-6 py-3 bg-white text-lg text-red-600 font-semibold rounded-full shadow border-2 border-red-100 transform hover:scale-110 transition-all duration-150 ease-in-out">
+        <a href="{{ route('reservasi') }}" class="btn animate-bounce hover:animate-none px-6 py-3 bg-white text-lg text-red-600 font-semibold rounded-full shadow border-2 border-red-100 transform hover:scale-110 transition-all duration-150 ease-in-out">
             Reservasi
         </a>
     </div>
 </section>
 
+<!-- CARD LAPANGAN -->
 <section class="bg-gray-50 h-fit w-full mx-auto py-16">
     <div class="text-center mb-12">
         <h2 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-3">Pilihan Lapangan Terbaik Kami</h2>
@@ -73,7 +74,7 @@
                 $image = $imageMap[$lapangan->nama_lapangan] ?? 'futsal_outdoor.jpg';
             @endphp
 
-            <a href="#" class="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 ease-in-out flex flex-col">
+            <a href="{{ route('lapangan.detail', $lapangan->id) }}" class="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 ease-in-out flex flex-col">
                 <div class="relative overflow-hidden aspect-video">
                     <img src="{{ asset('images/' . $image) }}" alt="{{ $lapangan->nama_lapangan }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
                     <span class="head2 absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
@@ -89,7 +90,7 @@
                     </p>
                     <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
                         <span class="head3 text-sm font-semibold text-emerald-600">
-                            Rp {{ number_format($lapangan->harga_per_jam, 0, ',', '.') }} / Jam
+                            Rp {{ number_format($lapangan->harga_saat_ini, 0, ',', '.') }} / Jam
                         </span>
                         <span class="head3 text-md font-bold text-red-600 flex items-center gap-1">Detail <span class="transform group-hover:translate-x-1 transition-transform">&rarr;</span></span>
                     </div>

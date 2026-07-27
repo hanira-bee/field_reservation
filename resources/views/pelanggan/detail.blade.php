@@ -1,145 +1,183 @@
 @extends('layouts.app')
 @section('title', 'Detail Lapangan')
-@section('breadcrumb_link', route('detail'))
+@section('breadcrumb_link', route('lapangan.detail', $lapangan->id))
 
 
 @section('content')
 <section class="bg-gray-50 min-h-screen px-4 sm:px-6 py-12">
     <div class="mx-auto max-w-7xl">
-        
-        <!-- 1. BREADCRUMB (Paling Atas) -->
+
+        <!-- BREADCRUMB -->
         <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mb-4">
             <a href="{{ route('home') }}" class="hover:text-red-600 transition">Beranda</a>
             <i class="fa-solid fa-angle-right text-red-600 text-[10px]"></i>
-            <span class="text-gray-800 font-bold">@yield('title', 'Detail Lapangan')</span>
+            <a href="{{ route('lapangan') }}" class="hover:text-red-600 transition">Lapangan</a>
+            <i class="fa-solid fa-angle-right text-red-600 text-[10px]"></i>
+            <span class="text-gray-800 font-bold">{{ $lapangan->nama_lapangan }}</span>
         </div>
 
-        <!-- 2. NAMA LAPANGAN -->
+        <!-- NAMA LAPANGAN -->
         <div class="mb-6">
-            <!-- Otomatis membaca font-prompt dari app.css Anda -->
             <h1 class="text-2xl sm:text-3xl font-black text-gray-900 uppercase tracking-tight">
                 {{ $lapangan->nama_lapangan }}
             </h1>
+            <p class="text-xs text-gray-400 flex items-center gap-1 mt-1">
+                <span class="material-icons text-sm">place</span> {{ $lapangan->lokasi }}
+            </p>
         </div>
 
-        <!-- 3. FOTO UTAMA (Bentuk Persegi Panjang / Landscape Ramah Ruang) -->
+        <!-- FOTO UTAMA -->
         <div class="w-full aspect-[21/9] sm:aspect-[3/1] rounded-2xl overflow-hidden shadow-sm mb-8">
-            <img src="/images/{{ $lapangan->gambar ?? 'futsal_outdoor.jpg' }}" 
-                 alt="Foto Utama Lapangan" 
-                 class="w-full h-full object-cover">
+            <!-- Gambar otomatis menyesuaikan jenis olahraga -->
+            @if($lapangan->jenis_lapangan == 'Futsal')
+            <img src="/images/futsal_indoor.jpg" alt="Futsal Arena" class="w-full h-full object-cover">
+            @else
+            <img src="/images/badminton_indoor.jpg" alt="Badminton Arena" class="w-full h-full object-cover">
+            @endif
         </div>
 
-        <!-- LAYOUT UTAMA: KIRI (INFO) & KANAN (JADWAL STICKY) -->
+        <!-- LAYOUT GRID UTAMA -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            
-            <!-- --- SISI KIRI: DETAIL LAPANGAN (Memakan 2 Kolom) --- -->
-            <div class="lg:col-span-2 space-y-8 bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-xs">
-                
-                <!-- Deskripsi -->
+            <!-- SISI KIRI: DATA DINAMIS DATABASE (Memakan 2 Kolom pada Layar Besar) -->
+            <div class="lg:col-span-2 space-y-8 bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm">
+
+                <!-- Blok Deskripsi Lapangan -->
                 <div>
                     <h3 class="font-prompt text-lg font-bold text-gray-900 border-b border-gray-100 pb-2 mb-3">
                         Deskripsi Lapangan
                     </h3>
                     <p class="text-gray-600 text-sm sm:text-base leading-relaxed whitespace-pre-line">
-                        {{ $lapangan->deskripsi ?? 'Rasakan sensasi pertandingan terbuka di atas lapisan rumput sintetis premium yang empuk, meminimalisir risiko cedera, dan dirancang khusus untuk akurasi pantulan bola yang optimal.' }}
+                        {{ $lapangan->deskripsi ?? 'Tidak ada deskripsi.' }}
                     </p>
                 </div>
 
-                <!-- Spesifikasi & Fasilitas (Grid Grid) -->
+                <!-- Blok Spesifikasi & Fasilitas -->
                 <div>
                     <h3 class="font-prompt text-lg font-bold text-gray-900 border-b border-gray-100 pb-2 mb-4">
                         Spesifikasi & Fasilitas
                     </h3>
-                    
                     <div class="grid grid-cols-2 gap-y-6 gap-x-4">
-                        <!-- Jenis Olahraga -->
+                        <!-- Kategori Kategori Lapangan -->
                         <div>
-                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Jenis Olahraga</span>
-                            <p class="text-sm sm:text-base font-bold text-gray-800">{{ $lapangan->jenis_olahraga ?? 'Futsal' }}</p>
-                        </div>
-                        
-                        <!-- Tipe Arena -->
-                        <div>
-                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Tipe Arena</span>
-                            <p class="text-sm sm:text-base font-bold text-gray-800">{{ $lapangan->jenis_lapangan ?? 'Outdoor' }}</p>
+                            <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Kategori</span>
+                            <p class="text-sm sm:text-base font-bold text-gray-800">{{ $lapangan->jenis_lapangan }}</p>
                         </div>
 
-                        <!-- Ukuran -->
+                        <!-- Harga Sewa Lapangan -->
                         <div>
-                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Ukuran Lapangan</span>
-                            <p class="text-sm sm:text-base font-bold text-gray-800">11 Meters x 40 Meters</p>
+                            <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Harga Sewa</span>
+                            <p class="text-sm sm:text-base font-bold text-emerald-600">
+                                Rp {{ number_format($hargaSewaHariIni ?? $lapangan->harga_per_jam, 0, ',', '.') }} / Jam
+                            </p>
                         </div>
 
-                        <!-- Fasilitas -->
-                        <div>
-                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">Fasilitas Penunjang</span>
-                            <p class="text-sm sm:text-base font-bold text-gray-800">Toilet, Ruang Ganti, Kursi Tribun, Parkir Luas</p>
+                        <!-- Daftar Fasilitas yang tersedia -->
+                        <div class="col-span-2">
+                            <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Fasilitas Tersedia</span>
+                            <p class="text-sm sm:text-base font-bold text-gray-800">{{ $lapangan->fasilitas ?? 'Standar Arena' }}</p>
                         </div>
                     </div>
                 </div>
 
-            </div>
+            </div> <!-- Penutup Sisi Kiri -->
+            <!-- SISI KANAN: PANEL JADWAL DAN KALENDER MINGGUAN -->
+            <div class="lg:col-span-3 bg-white border border-gray-100 rounded-2xl shadow-md p-6 w-full">
 
-            <!-- --- SISI KANAN: DAFTAR JADWAL STICKY (Memakan 1 Kolom) --- -->
-            <!-- lg:sticky & lg:top-6 membuat panel ini mengunci saat di-scroll ke bawah -->
-            <div class="lg:sticky lg:top-6 bg-white border border-gray-100 rounded-2xl shadow-md p-6">
-                
-                <h3 class="font-prompt text-lg font-bold text-gray-900 mb-1">Pesan Sekarang!</h3>
-                <p class="text-xs text-gray-400 mb-4">Pilih sesi waktu bermain Anda di bawah ini:</p>
-
-                <!-- Jadwal Sesi (Sesi 1 - Sesi 6 Berdurasi 1 Jam Mulai Jam 08:00) -->
-                <div class="space-y-4">
-                    
-                    <!-- Kategori 1: Weekday -->
+                <!-- Header Kalender Mingguan & Tombol Navigasi Minggu -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
                     <div>
-                        <div class="flex justify-between items-center bg-emerald-50 text-emerald-800 px-3 py-2 rounded-lg mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider">Tarif Weekday</span>
-                            <span class="text-sm font-black">Rp 130.000 <span class="text-[10px] font-normal">/Jam</span></span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 text-center text-xs font-semibold text-gray-600">
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">08:00 - 09:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">09:00 - 10:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">10:00 - 11:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">11:00 - 12:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">12:00 - 13:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">13:00 - 14:00</div>
-                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 flex items-center gap-1.5">
+                            <span class="material-icons text-red-600">calendar_month</span> Daftar Jadwal Mingguan
+                        </h3>
+                        <p class="text-xs text-gray-400 mt-0.5">Klik pada jam hijau yang tersedia untuk langsung melakukan reservasi</p>
                     </div>
 
-                    <!-- Kategori 2: Weekend -->
-                    <div>
-                        <div class="flex justify-between items-center bg-blue-50 text-blue-800 px-3 py-2 rounded-lg mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider">Tarif Weekend</span>
-                            <span class="text-sm font-black">Rp 150.000 <span class="text-[10px] font-normal">/Jam</span></span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 text-center text-xs font-semibold text-gray-600">
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">08:00 - 09:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">09:00 - 10:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">10:00 - 11:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">11:00 - 12:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">12:00 - 13:00</div>
-                            <div class="p-2 border border-gray-100 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 cursor-pointer transition">13:00 - 14:00</div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- 4. BUTTON RESERVASI (Paling Bawah Kotak Sticky) -->
-                <!-- Menggunakan group hover transisi panah & scale-102 -->
-                <div class="mt-6">
-                    <a href="#link-formulir-booking" class="font-rubik group flex items-center justify-center gap-2 w-full py-3 bg-red-600 hover:bg-red-800 text-white font-bold rounded-xl text-center shadow transform hover:scale-102 transition-all duration-150 ease-in-out cursor-pointer">
-                        <span>BOOK NOW</span>
-                        <span class="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">
-                            &rarr;
+                    <!-- Navigasi Tanggal Rentang Minggu -->
+                    <div class="flex items-center gap-3 self-start sm:self-auto">
+                        <span class="text-xs sm:text-sm font-bold text-gray-700 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
+                            {{ \Carbon\Carbon::parse($startOfWeek)->format('m/d/Y') }} – {{ \Carbon\Carbon::parse($startOfWeek)->copy()->addDays(6)->format('m/d/Y') }}
                         </span>
-                    </a>
+                        <div class="inline-flex rounded-lg border border-gray-200 shadow-xs bg-white">
+                            <a href="{{ url()->current() }}?tanggal={{ $prevWeekString ?? '' }}" class="px-3 py-1.5 hover:bg-gray-50 text-gray-600 border-r border-gray-200 transition">&lsaquo;</a>
+                            <a href="{{ url()->current() }}?tanggal={{ $nextWeekString ?? '' }}" class="px-3 py-1.5 hover:bg-gray-50 text-gray-600 transition">&rsaquo;</a>
+                        </div>
+                    </div>
                 </div>
 
-            </div>
+                <!-- TAMPILAN GRID KALENDER MINGGUAN (7 KOLOM RESPONSIVE) -->
+                <div class="w-full overflow-x-auto pb-2">
+                    <div class="grid grid-cols-7 gap-4 min-w-[840px] lg:min-w-0">
 
-        </div>
+                        @for ($i = 0; $i < 7; $i++)
+                            @php
+                            $hariH=\Carbon\Carbon::parse($startOfWeek)->copy()->addDays($i);
+                            $tanggalString = $hariH->toDateString();
+                            $isHariIni = $tanggalString === $tanggalAcuan;
+                            $isMasaLalu = $hariH->isPast() && !$hariH->isToday();
+                            @endphp
 
+                            <!-- Kotak Kolom Per Hari -->
+                            <div class="rounded-xl p-2 transition border flex flex-col {{ $isHariIni ? 'bg-amber-50/40 border-amber-300 ring-2 ring-amber-100' : 'bg-gray-50/50 border-gray-100' }}">
+
+                                <!-- Label Nama Hari & Tanggal -->
+                                <div class="text-center pb-2 mb-3 border-b border-gray-200/60">
+                                    <p class="text-xs font-bold {{ $isHariIni ? 'text-amber-700' : 'text-blue-600' }}">
+                                        {{ $hariH->isoFormat('ddd') }} {{ $hariH->format('n/j') }}
+                                    </p>
+                                </div>
+
+                                <!-- PERBAIKAN: Daftar Slot Jam Berada di Dalam Kotak Hari Terkait -->
+                                <div class="space-y-1.5 flex-grow">
+                                    @foreach($daftarSesi as $sesi)
+                                    @php
+                                    $formatSesiSelesai = \Carbon\Carbon::parse($sesi)->addHours(2)->format('H:i');
+                                    $sudahDihuni = isset($matriksBooking[$tanggalString]) && in_array($sesi, $matriksBooking[$tanggalString]);
+                                    @endphp
+
+                                    @if($isMasaLalu)
+                                    <!-- Kondisi 1: Sesi Kadaluwarsa / Masa Lalu -->
+                                    <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] font-medium text-center cursor-not-allowed">
+                                        Closed
+                                    </div>
+                                    @elseif($sudahDihuni)
+                                    <!-- Kondisi 2: Sesi Terpesan (Indikator Merah) -->
+                                    <div class="py-1.5 px-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-[10px] font-bold flex items-center justify-center gap-1 cursor-not-allowed" title="Jadwal Terpesan">
+                                        <span class="w-1.5 h-1.5 bg-red-600 rounded-full inline-block animate-pulse"></span> {{ $sesi }}
+                                    </div>
+                                    @else
+                                    <!-- Kondisi 3: Sesi Tersedia (Indikator Hijau) -->
+                                    <a href="{{ route('reservasi', ['lapangan_id' => $lapangan->id, 'tanggal' => $tanggalString, 'jam' => $sesi]) }}" class="py-1.5 px-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-100 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition duration-150 block text-center" title="Klik untuk Booking">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> {{ $sesi }}
+                                    </a>
+                                    @endif
+                                    @endforeach
+                                </div>
+
+                            </div> <!-- Penutup Kotak Kolom Per Hari -->
+                            @endfor
+
+                    </div>
+                </div>
+
+                <!-- PANEL LEGENDA KETERANGAN STATUS WARNA -->
+                <div class="mt-6 flex flex-wrap gap-4 text-xs font-bold text-gray-500 border-t border-gray-100 pt-4">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 bg-emerald-50 border border-emerald-100 rounded-full inline-block"></span> Jadwal Tersedia
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 bg-red-50 border border-red-100 rounded-full inline-block"></span> Jadwal Terpesan
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 bg-gray-100 rounded-full inline-block"></span> Sudah Lewat
+                    </div>
+                    <div class="ml-auto text-xs font-medium text-gray-400">
+                        *Catatan: Sesi berdurasi per 2 jam sesuai regulasi arena permainan.
+                    </div>
+                </div>
+
+            </div> <!-- Penutup Sisi Kanan -->
+
+        </div> <!-- Penutup Layout Grid Utama -->
     </div>
 </section>
-
 @endsection

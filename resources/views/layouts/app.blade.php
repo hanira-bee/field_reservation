@@ -67,7 +67,7 @@
         <!-- /* ------------------------------- KONTEN HALAMAN ------------------------------- */ -->
         <main class="flex-1 flex flex-col min-h-screen overflow-y-auto relative z-10 w-full">
             <!-- /* --------------------------------- HEADER --------------------------------- */ -->
-            <header class="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-8 py-2 sm:py-4 bg-white sticky top-0 z-30 shadow-sm">
+            <header class="w-full flex flex-wrap items-center justify-between gap-3 px-4 sm:px-8 py-2 sm:py-4 bg-white fixed top-0 z-30 shadow-sm">
                 <!-- logo -->
                 <div class="flex items-center gap-2 sm:gap-3">
                     <button class="p-1.5 sm:p-2 text-red-600 hover:bg-gray-100 rounded-lg md:hidden" onclick="toggleSidebar()">
@@ -98,8 +98,8 @@
                             <button type="submit" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Keluar</button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Masuk</a>
-                        <a href="{{ route('register') }}" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm md:text-base lg:text-lg">Daftar</a>
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base">Masuk</a>
+                        <a href="{{ route('register') }}" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm md:text-base">Daftar</a>
                     @endauth
                 </div>
             </header>
@@ -124,7 +124,7 @@
                             <p class="text-red-100 text-sm leading-relaxed antialiased">
                                 SM Sport Center adalah platform reservasi lapangan olahraga premium terbaik untuk bulu tangkis dan futsal, baik arena indoor maupun outdoor. Pesan slot jadwal Anda secara online dengan mudah, cepat, dan aman sebelum kehabisan.
                             </p>
-                            <a href="#" class="inline-block w-fit text-center bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-md text-sm tracking-wide transform hover:scale-105 transition-all duration-105 ease-in-out shadow-md">
+                            <a href="{{ route('reservasi') }}" class="inline-block w-fit text-center bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-md text-sm tracking-wide transform hover:scale-105 transition-all duration-105 ease-in-out shadow-md">
                                 PESAN SEKARANG
                             </a>
                         </div>

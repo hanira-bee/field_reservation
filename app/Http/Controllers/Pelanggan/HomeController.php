@@ -27,10 +27,10 @@ class HomeController extends Controller
         $lapangans = Lapangan::where('status_aktif', true)
             ->orderBy('nama_lapangan')
             ->get();
-        
-            foreach ($lapangans as $lapangan) {
-                $lapangan->harga_saat_ini = $this->hitungHargaDinamis($lapangan->harga_per_jam, Carbon::today());
-            }
+
+        foreach ($lapangans as $lapangan) {
+            $lapangan->harga_saat_ini = $this->hitungHargaDinamis($lapangan->harga_per_jam, Carbon::today());
+        }
 
         return view('pelanggan.home', compact('lapangans'));
     }
@@ -74,44 +74,53 @@ class HomeController extends Controller
 
     public function submitReservasi(Request $request)
     {
-        // validasi input form html
+        // 1. Validasi input dari form HTML
         $validated = $request->validate([
             'lapangan_id' => ['required', 'exists:lapangans,id'],
             'tanggal' => ['required', 'date', 'after_or_equal:today'],
-            'jam' => ['required', 'string'],
+            'jam' => ['required', 'string'], // Menerima data string waktu dari form
             'catatan' => ['nullable', 'string'],
         ]);
 
-        // Proteksi ganda anti-bentrok jadwal
+        // 2. Ekstraksi jam: Mengambil 5 karakter pertama sebelum tanda strip jika user memilih paket 2 jam
+        $jamMulaiSesi = substr($validated['jam'], 0, 5);
+
+        // 3. Deteksi Paket: Memeriksa apakah data jam mengandung karakter " - " (Paket 2 Jam)
+        $isPaket2Jam = str_contains($validated['jam'], ' - ');
+
+        // 4. Proteksi anti-bentrok menggunakan jam mulai sesi yang sudah bersih
         $bentrok = Reservasi::where('lapangan_id', $validated['lapangan_id'])
             ->where('tgl_reservasi', $validated['tanggal'])
-            ->where('slot_jam', $validated['jam'])
-            ->where('status reservasi', '!=', 'cancelled')
+            ->where('slot_jam', $jamMulaiSesi)
+            ->where('status_reservasi', '!=', 'cancelled')
             ->exists();
 
         if ($bentrok) {
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['jam' => 'Jadwal pada tanggal dan jam tersebut baru saja dipesan oleh pengguna lain.']);
+                ->withErrors(['jam' => 'Jadwal pada tanggal dan sesi tersebut baru saja dipesan oleh pengguna lain. Silakan pilih jadwal lain.']);
         }
 
-        // ambil data lapangan untuk mendapatkan harga sewa
         $lapangan = Lapangan::findOrFail($validated['lapangan_id']);
-        $hargaFinal = $this->hitungHargaDinamis($lapangan->harga_per_jam, $validated['tanggal']);
 
-        // simpan ke database sesuai struktur kolom migration
+        // 5. Kalkulasi Biaya Otomatis: Jika memilih paket 2 jam, harga dasar lapangan dikalikan 2
+        $totalBiaya = $isPaket2Jam ? ($lapangan->harga_per_jam * 2) : $lapangan->harga_per_jam;
+
+        // 6. Simpan data reservasi secara sah ke database
         Reservasi::create([
-            'user_id' => Auth::id(), // id pengguna yang sedang login
+            'user_id' => Auth::id(),
             'lapangan_id' => $validated['lapangan_id'],
             'tgl_reservasi' => $validated['tanggal'],
-            'slot_jam' => $validated['jam'],
-            'total_biaya' => $hargaFinal,
+            'slot_jam' => $jamMulaiSesi,
+            'total_biaya' => $totalBiaya,
             'status_reservasi' => 'pending',
             'catatan' => $validated['catatan'],
         ]);
 
-        return Redirect::route('home')->with('success', 'Reservasi anda berhasil diajukan! Menunggu konfirmasi admin.');
+        return Redirect::route('home')->with('success', 'Reservasi anda berhasil diajukan! Silakan pantau status persetujuan dari admin.');
     }
+
+
 
     public function kontak()
     {
@@ -121,44 +130,41 @@ class HomeController extends Controller
     public function detail(Request $request, $id)
     {
         $lapangan = Lapangan::findOrFail($id);
+        $tanggalDipilih = $request->get('tanggal', Carbon::today()->toDateString());
 
-        // ambil tanggal acuan, default hari ini
-        $tanggalAcuan = $request->get('tanggal', Carbon::today()->toDateString());
-        $carbonAcuan = Carbon::parse($tanggalAcuan);
-
-        // hitung rentang awal minggu dan akhir minggu
-        $startOfWeek = $carbonAcuan->copy()->startOfWeek(Carbon::SUNDAY);
-        $endOfWeek = $carbonAcuan->copy()->endOfWeek(Carbon::SATURDAY);
-
-        // ambil seluruh data booking aktif untuk lapangan ini khusus di minggu tersebut
-        $reservasiMingguan = Reservasi::where('lapangan_id', $id)
-            ->whereBetween('tgl_reservasi', [$startOfWeek->toDateString(), $endOfWeek->toDateString()])
+        // Mengambil slot_jam yang sudah dibooking pada tanggal terpilih
+        $jamTerbookingRaw = Reservasi::where('lapangan_id', $id)
+            ->where('tgl_reservasi', $tanggalDipilih)
             ->where('status_reservasi', '!=', 'cancelled')
-            ->get();
+            ->pluck('slot_jam')
+            ->map(function ($time) {
+                return Carbon::parse($time)->format('H:i'); // Mengubah format "08:00:00" dari MySQL menjadi "08:00"
+            })
+            ->toArray();
 
-        $matriksBooking = [];
-        foreach ($reservasiMingguan as $res) {
-            $tgl = $res->tgl_reservasi;
-            $jam = Carbon::parse($res->slot_jam)->format('H:i');
-            $matriksBooking[$tgl][] = $jam;
-        }
+        // Definisi master sesi 1 jam (Sesuai dengan kode perbaikan Blade)
+        $sesi1Jam = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00'];
 
-        // menentukan slot jam reservasi
-        $daftarSesi = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+        // Definisi master sesi 2 jam (Sesuai dengan teks rentang waktu yang Anda minta)
+        $sesi2Jam = ['08:00 - 10:00', '10:00 - 12:00', '12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'];
 
-        // menghitung harga dinamis untuk tanggal yang sedang diklik user
-        $hargaSewaHariIni = $this->hitungHargaDinamis($lapangan->harga_per_jam, $tanggalAcuan);
-        $statusHari = $carbonAcuan->isWeekend() ? 'Weekend' : 'Weekday';
+        // Mengatur penanggalan navigasi rentang minggu (< > pada kalender)
+        $date = Carbon::parse($tanggalDipilih);
+        $statusHari = $date->isWeekend() ? 'Weekend' : 'Weekday';
+        $prevWeekString = $date->copy()->subWeek()->toDateString();
+        $nextWeekString = $date->copy()->addWeek()->toDateString();
+        $startOfWeek = $date->copy()->startOfWeek(Carbon::SUNDAY)->toDateString();
 
-        // navigasi minggu sebelumnya & minggu setelahnya
-        $preWeekString = $carbonAcuan->copy()->subWeek()->toDateString();
-        $nextWeekString = $carbonAcuan->copy()->addWeek()->toDateString();
-
-        // mengecek tanggal yang dipilih termasuk hari biasa atau akhir pekan
-        // $date = CArbon::parse($tanggalDipilih);
-        // $statusHari = $date->isWeekend() ? 'Weekend' : 'Weekday';
-
-        // 4. Kirim data lapangan tunggal, tanggal, daftar jam terbooking, status hari, dan slot jam ke view
-        return view('pelanggan.detail', compact('lapangan', 'tanggalAcuan', 'startOfWeek', 'matriksBooking', 'daftarSesi', 'hargaSewaHariIni', 'statusHari', 'preWeekString', 'nextWeekString'));
+        return view('pelanggan.detail', compact(
+            'lapangan',
+            'tanggalDipilih',
+            'jamTerbookingRaw',
+            'sesi1Jam',
+            'sesi2Jam',
+            'statusHari',
+            'startOfWeek',
+            'prevWeekString',
+            'nextWeekString'
+        ));
     }
 }

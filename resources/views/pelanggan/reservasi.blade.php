@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="bg-white min-h-[70vh] px-6 py-16">
+<section class="bg-white min-h-[70vh] px-6 py-24">
     <div class="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gray-50 p-8 shadow-sm">
         
         <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">

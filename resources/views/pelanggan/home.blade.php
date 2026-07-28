@@ -15,10 +15,10 @@
             Bangun kesehatan dan gaya hidupmu dengan fasilitas modern dan pengalaman terbaik.
         </p>
         <div class="mt-6 flex flex-wrap justify-center gap-4">
-            <a href="{{ route('lapangan') }}" class="btn px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-800 transition">
+            <a href="{{ route('lapangan') }}" class="btn px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-800 transform hover:scale-[1.01] transition-all duration-150 tracking-wider">
                 Mulai
             </a>
-            <a href="#" class="btn px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow hover:bg-gray-200 transition">
+            <a href="#" class="btn px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow hover:bg-gray-200 transform hover:scale-[1.01] transition-all duration-150 tracking-wider">
                 Pelajari
             </a>
         </div>

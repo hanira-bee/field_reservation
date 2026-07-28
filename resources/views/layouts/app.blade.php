@@ -45,12 +45,12 @@
                     </span>
                 </a>
 
-                <a href="{{ route('reservasi') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('reservasi') ? $activeClass : $normalClass }}">
+                <!-- <a href="{{ route('reservasi') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('reservasi') ? $activeClass : $normalClass }}">
                     <i class="fas fa-calendar-check text-sm sm:text-base w-5 sm:w-6 text-center"></i>
                     <span class="text-sm sm:text-base">
                         <h2>Reservasi</h2>
                     </span>
-                </a>
+                </a> -->
 
                 <a href="{{ route('kontak') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('kontak') ? $activeClass : $normalClass }}">
                     <i class="fas fa-envelope text-sm sm:text-base w-5 sm:w-6 text-center"></i>
@@ -68,41 +68,70 @@
         <main class="flex-1 flex flex-col min-h-screen overflow-y-auto relative z-10 w-full">
             <!-- /* --------------------------------- HEADER --------------------------------- */ -->
             <header class="w-full flex flex-wrap items-center justify-between gap-3 px-4 sm:px-8 py-2 sm:py-4 bg-white fixed top-0 z-30 shadow-sm">
-                <!-- logo -->
+
+                <!-- logo & Mobile Menu Trigger -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <button class="p-1.5 sm:p-2 text-red-600 hover:bg-gray-100 rounded-lg md:hidden" onclick="toggleSidebar()">
+                    <button class="p-1.5 sm:p-2 text-red-600 hover:bg-gray-100 rounded-lg md:hidden flex items-center justify-center" onclick="toggleSidebar()">
                         <i class="fas fa-bars text-base sm:text-lg"></i>
                     </button>
                     <a href="{{ route('home') }}">
-                        <span class="font-stack font-extrabold text-red-800 text-xs sm:text-sm md:text-base lg:text-lg">SM SPORT CENTER</span>
+                        <span class="font-stack font-extrabold text-red-800 text-xs sm:text-sm md:text-base lg:text-lg tracking-wider">SM SPORT CENTER</span>
                     </a>
                 </div>
 
-                <!-- /* --------------------------------- NAVBAR --------------------------------- */ -->
-                <nav class="font-prompt hidden md:flex items-center gap-2 sm:gap-3">
-                    <a href="{{ route('home') }}" class="text-xs sm:text-sm md:text-base lg:text-lg {{ request()->routeIs('home') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-600' }}">Beranda</a>
-                    <a href="{{ route('lapangan') }}" class="text-xs sm:text-sm md:text-base lg:text-lg {{ request()->routeIs('lapangan') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-600' }}">Lapangan</a>
-                    <a href="{{ route('reservasi') }}" class="text-xs sm:text-sm md:text-base lg:text-lg {{ request()->routeIs('reservasi') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-600' }}">Reservasi</a>
-                    <a href="{{ route('kontak') }}" class="text-xs sm:text-sm md:text-base lg:text-lg {{ request()->routeIs('kontak') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-600' }}">Kontak Kami</a>
+                <!-- /* --------------------------------- NAVBAR MENU --------------------------------- */ -->
+                <nav class="font-prompt hidden md:flex items-center gap-1 sm:gap-2">
+                    <a href="{{ route('home') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('home') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Beranda</a>
+                    <a href="{{ route('lapangan') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('lapangan') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Lapangan</a>
+                    <!-- <a href="{{ route('reservasi') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('reservasi') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Reservasi</a> -->
+                    <a href="{{ route('kontak') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('kontak') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Kontak Kami</a>
                 </nav>
 
-                <!-- login dan signup -->
+                <!-- /* ----------------------------- USER PROFILE / AUTH BUTTONS ----------------------------- */ -->
                 <div class="font-rubik flex items-center gap-2 sm:gap-3 ml-auto md:ml-0">
                     @auth
-                        <span class="text-sm text-gray-700">Halo, {{ Auth::user()->name }}</span>
-                        @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Dashboard</a>
-                        @endif
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base lg:text-lg">Keluar</button>
-                        </form>
+                    <!-- TAMPILAN JIKA PENGGUNA SUDAH LOGIN -->
+                    <div class="flex items-center gap-3 bg-gray-50 border border-gray-100 pl-3 pr-2 py-1.5 rounded-full shadow-xs">
+                        <!-- Lingkaran Avatar Inisial Huruf Nama -->
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs sm:text-sm uppercase shadow-xs">
+                            {{ substr(Auth::user()->name, 0, 1) }}
+                        </div>
+
+                        <!-- Info Nama Pengguna -->
+                        <div class="hidden sm:block text-left max-w-[120px]">
+                            <p class="text-xs font-bold text-gray-800 truncate leading-none mb-0.5">{{ Auth::user()->name }}</p>
+                            <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider block">{{ Auth::user()->role }}</span>
+                        </div>
+
+                        <!-- Pembatas & Menu Tambahan -->
+                        <div class="flex items-center gap-1 border-l border-gray-200 pl-2 ml-1">
+                            @if (Auth::user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="text-gray-500 hover:text-red-600 p-1 transition flex items-center" title="Dashboard Admin">
+                                <span class="material-icons text-lg sm:text-xl">dashboard</span>
+                            </a>
+                            @endif
+
+                            <!-- Tombol Keluar POST Form -->
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                                @csrf
+                                <button type="submit" class="text-gray-400 hover:text-red-600 p-1 transition flex items-center" title="Keluar">
+                                    <span class="material-icons text-lg sm:text-xl">logout</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                     @else
-                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-600 text-xs sm:text-sm md:text-base">Masuk</a>
-                        <a href="{{ route('register') }}" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm md:text-base">Daftar</a>
+                    <!-- TAMPILAN JIKA PENGGUNA ADALAH TAMU (GUEST) -->
+                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-red-600 font-semibold text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition">
+                        Masuk
+                    </a>
+                    <a href="{{ route('register') }}" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-full text-xs sm:text-sm md:text-base shadow-xs transform hover:scale-102 transition duration-150">
+                        Daftar
+                    </a>
                     @endauth
                 </div>
             </header>
+
 
             <!-- KONTEN PELANGGAN -->
             <div class="w-full flex-1">

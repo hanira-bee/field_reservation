@@ -24,8 +24,10 @@ class HomeController extends Controller
     }
     public function index()
     {
-        $lapangans = Lapangan::where('status_aktif', true)
+        $lapangans = Lapangan::query()
+            ->where('status_aktif', true)
             ->orderBy('nama_lapangan')
+            ->take(5)
             ->get();
 
         foreach ($lapangans as $lapangan) {
@@ -120,8 +122,6 @@ class HomeController extends Controller
         return Redirect::route('home')->with('success', 'Reservasi anda berhasil diajukan! Silakan pantau status persetujuan dari admin.');
     }
 
-
-
     public function kontak()
     {
         return view('pelanggan.kontak');
@@ -166,5 +166,10 @@ class HomeController extends Controller
             'prevWeekString',
             'nextWeekString'
         ));
+    }
+
+    public function pelajari()
+    {
+        return view('pelanggan.pelajari');
     }
 }

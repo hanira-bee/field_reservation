@@ -13,6 +13,8 @@ class Lapangan extends Model
         'harga_per_jam',
         'deskripsi',
         'fasilitas',
+        'ukuran',
+        'gambar',
         'status_aktif',
     ];
 

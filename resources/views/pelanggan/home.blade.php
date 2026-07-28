@@ -18,7 +18,7 @@
             <a href="{{ route('lapangan') }}" class="btn px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-800 transform hover:scale-[1.01] transition-all duration-150 tracking-wider">
                 Mulai
             </a>
-            <a href="#" class="btn px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow hover:bg-gray-200 transform hover:scale-[1.01] transition-all duration-150 tracking-wider">
+            <a href="{{ route('pelajari') }}" class="btn px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow hover:bg-gray-200 transform hover:scale-[1.01] transition-all duration-150 tracking-wider">
                 Pelajari
             </a>
         </div>
@@ -63,44 +63,62 @@
 
     <div class="grid grid-cols-1 gap-8 p-6 md:grid-cols-2 lg:grid-cols-3 lg:p-10">
         @forelse ($lapangans as $lapangan)
-            @php
-                $imageMap = [
-                    'Lapangan Futsal Outdoor' => 'futsal_outdoor.jpg',
-                    'Lapangan Futsal Indoor' => 'futsal_indoor.jpg',
-                    'Lapangan Badminton Outdoor' => 'badminton_outdoor1.jpg',
-                    'Lapangan Badminton Indoor 1' => 'badminton_indoor.jpg',
-                    'Lapangan Badminton Indoor 2' => 'badminton_indoor1.jpg',
-                ];
-                $image = $imageMap[$lapangan->nama_lapangan] ?? 'futsal_outdoor.jpg';
-            @endphp
+        <!-- @php
+        $imageMap = [
+        'Lapangan Futsal Outdoor' => 'futsal_outdoor.jpg',
+        'Lapangan Futsal Indoor' => 'futsal_indoor.jpg',
+        'Lapangan Badminton Outdoor' => 'badminton_outdoor1.jpg',
+        'Lapangan Badminton Indoor 1' => 'badminton_indoor.jpg',
+        'Lapangan Badminton Indoor 2' => 'badminton_indoor1.jpg',
+        ];
+        $image = $imageMap[$lapangan->nama_lapangan] ?? 'futsal_outdoor.jpg';
+        @endphp -->
 
-            <a href="{{ route('lapangan.detail', $lapangan->id) }}" class="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 ease-in-out flex flex-col">
-                <div class="relative overflow-hidden aspect-video">
-                    <img src="{{ asset('images/' . $image) }}" alt="{{ $lapangan->nama_lapangan }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
-                    <span class="head2 absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
-                        {{ $lapangan->jenis_lapangan }}
-                    </span>
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-red-600 transition-colors">
-                        {{ $lapangan->nama_lapangan }}
-                    </h3>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">
-                        {{ $lapangan->deskripsi }}
-                    </p>
-                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-                        <span class="head3 text-sm font-semibold text-emerald-600">
-                            Rp {{ number_format($lapangan->harga_saat_ini, 0, ',', '.') }} / Jam
-                        </span>
-                        <span class="head3 text-md font-bold text-red-600 flex items-center gap-1">Detail <span class="transform group-hover:translate-x-1 transition-transform">&rarr;</span></span>
-                    </div>
-                </div>
-            </a>
-        @empty
-            <div class="col-span-full rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-gray-500">
-                Belum ada lapangan yang tersedia saat ini.
+        <a href="{{ route('lapangan.detail', $lapangan->id) }}" class="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 ease-in-out flex flex-col">
+
+            <!-- BAGIAN GAMBAR OTOMATIS DATABASE -->
+            <div class="relative overflow-hidden aspect-video">
+                <!-- memeriksa apakah kolam gambar di database memiliki isi -->
+                @if(!empty($lapangan->gambar))
+                    <!-- membaca file gambar dinamis yang diupload admin ke folder public/images -->
+                    <img src="{{ asset('images/' . $lapangan->gambar) }}" alt="{{ $lapangan->nama_lapangan }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
+                @else
+                    <!-- gambar cadangan jika admin mengosongkan foto saat input lapangan baru -->
+                    <img src="{{ asset('images/banner-home1.jpg') }}" alt="Default Banner" class="w-full h-full object-cover group-hover:scale-105 transition-tranform duration-500 ease-in-out">
+                @endif
+
+                <span class="head2 absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                    {{ $lapangan->jenis_lapangan }}
+                </span>
             </div>
+
+            <div class="p-6 flex flex-col flex-grow">
+                <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-red-600 transition-colors">
+                    {{ $lapangan->nama_lapangan }}
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">
+                    {{ $lapangan->deskripsi }}
+                </p>
+                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
+                    <span class="head3 text-sm font-semibold text-emerald-600">
+                        Rp {{ number_format($lapangan->harga_saat_ini, 0, ',', '.') }} / Jam
+                    </span>
+                    <span class="head3 text-md font-bold text-red-600 flex items-center gap-1">Detail <span class="transform group-hover:translate-x-1 transition-transform">&rarr;</span></span>
+                </div>
+            </div>
+        </a>
+        @empty
+        <div class="col-span-full rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-gray-500">
+            Belum ada lapangan yang tersedia saat ini.
+        </div>
         @endforelse
     </div>
+    <!-- tombol see more -->
+     <div class="mt-12 flex justify-center items-center">
+        <a href="{{ route('lapangan') }}" class="font-rubik group items-center justify-center gap-2 px-8 py-3.5 bg-white hover:bg-red-600 hover:text-white font-normal rounded-full shadow-md hover:shadow-xl border-red-100 hover:border-red-600 transform hover:-translate-y-0.5 transition-all duration-200 ease-in-out">
+            <span>Lihat Semua Lapangan</span>
+            <span class="transform group-hover:translate-x-1.5 transition-transform duration-200 ease-in-out">&rarr;</span>
+        </a>
+     </div>
 </section>
 @endsection

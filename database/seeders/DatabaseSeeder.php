@@ -15,11 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        User::updateOrCreate([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'no_telepon' => '081234567890',
+            'role' => 'pelanggan',
+            'tgl_daftar' => now()->toDateString(),
         ]);
 
-        $this->call(LapanganSeeder::class);
+        $this->call([
+            LapanganSeeder::class
+            ]);
     }
 }

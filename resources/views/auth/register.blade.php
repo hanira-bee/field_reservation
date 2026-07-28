@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="min-h-[80vh] bg-gray-50 px-4 sm:px-6 py-24 flex items-center justify-center">
+<section class="min-h-[80vh] bg-gray-50 px-4 sm:px-6 py-6 flex items-center justify-center">
     <div class="w-full max-w-md rounded-3xl border border-gray-100 bg-white p-6 sm:p-10 shadow-md">
 
         <!-- HEADER FORM -->

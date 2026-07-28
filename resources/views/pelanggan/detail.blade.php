@@ -4,7 +4,7 @@
 
 
 @section('content')
-<section class="bg-gray-50 min-h-screen px-4 sm:px-6 py-24">
+<section class="bg-gray-50 min-h-screen px-4 sm:px-6 py-6">
     <div class="mx-auto max-w-7xl">
 
         <!-- BREADCRUMB -->
@@ -28,11 +28,13 @@
 
         <!-- FOTO UTAMA -->
         <div class="w-full aspect-[21/9] sm:aspect-[3/1] rounded-2xl overflow-hidden shadow-sm mb-8">
-            <!-- Gambar otomatis menyesuaikan jenis olahraga -->
-            @if($lapangan->jenis_lapangan == 'Futsal')
-            <img src="/images/futsal_indoor.jpg" alt="Futsal Arena" class="w-full h-full object-cover">
+            <!-- memeriksa apakah kolam gambar di database memiliki isi -->
+            @if(!empty($lapangan->gambar))
+                <!-- membaca file gambar dinamis yang diupload admin ke folder public/images -->
+                <img src="{{ asset('images/' . $image) }}" alt="{{ $lapangan->nama_lapangan }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
             @else
-            <img src="/images/badminton_indoor.jpg" alt="Badminton Arena" class="w-full h-full object-cover">
+                <!-- gambar cadangan jika admin mengosongkan foto saat input lapangan baru -->
+                <img src="{{ asset('images/futsal_outdoor.jpg') }}" alt="Default Banner" class="w-full h-full object-cover group-hover:scale-105 transition-tranform duration-500 ease-in-out">
             @endif
         </div>
 
@@ -40,47 +42,53 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
             <!-- SISI KIRI: DATA DINAMIS DATABASE (Memakan 2 Kolom pada Layar Besar) -->
-            <div class="lg:col-span-2 space-y-8 bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm">
+            <div class="lg:col-span-2 space-y-8 bg-white p-6 sm:p-8 rounded-2xl border border-gray-300 shadow-sm">
 
                 <!-- Blok Deskripsi Lapangan -->
                 <div>
-                    <h3 class="font-prompt text-lg font-bold text-gray-900 border-b border-gray-100 pb-2 mb-3">
+                    <h3 class="font-prompt text-lg font-bold text-red-600 border-b border-gray-300 pb-1 mb-3">
                         Deskripsi Lapangan
                     </h3>
-                    <p class="text-gray-600 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                    <p class="text-gray-600 text-sm sm:text-base leading-relaxed flex text-justify">
                         {{ $lapangan->deskripsi ?? 'Tidak ada deskripsi.' }}
                     </p>
                 </div>
 
                 <!-- Blok Spesifikasi & Fasilitas -->
                 <div>
-                    <h3 class="font-prompt text-lg font-bold text-gray-900 border-b border-gray-100 pb-2 mb-4">
+                    <h3 class="font-prompt text-base font-bold text-gray-900 border-b border-gray-100 pb-2 mb-4">
                         Spesifikasi & Fasilitas
                     </h3>
                     <div class="grid grid-cols-2 gap-y-6 gap-x-4">
                         <!-- Kategori Lapangan -->
                         <div>
                             <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Kategori</span>
-                            <p class="text-sm sm:text-base font-bold text-gray-800">{{ $lapangan->jenis_lapangan }}</p>
+                            <p class="text-sm font-bold text-gray-600">{{ $lapangan->jenis_lapangan }}</p>
                         </div>
 
                         <!-- Pilihan Mode Sesi Aktif -->
                         <div>
                             <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Mode Durasi Sesi</span>
-                            <div class="inline-flex rounded-lg border border-gray-200 p-1 bg-gray-100 text-xs font-bold">
+                            <div class="inline-flex rounded-lg border border-gray-200 p-1 bg-red-600 text-xs font-bold">
                                 <button type="button" id="btn-1jam" onclick="switchPaket(1, {{ $lapangan->harga_per_jam }})" class="px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-xs transition">
                                     Sesi 1 Jam
                                 </button>
-                                <button type="button" id="btn-2jam" onclick="switchPaket(2, {{ $lapangan->harga_per_jam * 2 }})" class="px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-800 transition">
+                                <button type="button" id="btn-2jam" onclick="switchPaket(2, {{ $lapangan->harga_per_jam * 2 }})" class="px-3 py-1.5 rounded-md text-white hover:text-gray-800 transition">
                                     Paket 2 Jam
                                 </button>
                             </div>
                         </div>
 
                         <!-- Daftar Fasilitas -->
-                        <div class="col-span-2">
+                        <div>
                             <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Fasilitas Tersedia</span>
                             <p class="text-sm sm:text-base font-bold text-gray-800">{{ $lapangan->fasilitas ?? 'Standar Arena' }}</p>
+                        </div>
+
+                        <!-- Ukuran Lapangan -->
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Ukuran</span>
+                            <p class="text-sm sm:text-base font-bold text-gray-800">{{ $lapangan->ukuran ?? 'Proporsional Arena' }}</p>
                         </div>
                     </div>
                 </div>
@@ -252,7 +260,7 @@
 
             // Atur warna aktif tombol 1 jam
             btn1.className = "px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-xs transition";
-            btn2.className = "px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-800 transition";
+            btn2.className = "px-3 py-1.5 rounded-md text-white hover:text-gray-800 transition";
         } else {
             // Tampilkan 2 jam, sembunyikan 1 jam
             wrappers1Jam.forEach(el => el.classList.add('hidden'));
@@ -260,7 +268,7 @@
 
             // Atur warna aktif tombol 2 jam
             btn2.className = "px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-xs transition";
-            btn1.className = "px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-800 transition";
+            btn1.className = "px-3 py-1.5 rounded-md text-white hover:text-gray-800 transition";
         }
     }
 </script>

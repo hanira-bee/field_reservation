@@ -19,7 +19,7 @@
 
 <body class="bg-white min-h-screen">
     <div class="min-h-screen flex">
-        <!-- /* ---------------------------------- ASIDE --------------------------------- */ -->
+        <!-- /* ---------------------------------- ASIDE (SIDEBAR MOBILE)--------------------------------- */ -->
         <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white shadow-xl z-50 transition-transform duration-300 -translate-x-full md:-translate-x-full">
             <div class="px-6 sm:px-8 pt-6 sm:pt-8 flex items-center gap-2 mb-8 sm:mb-10">
                 <h1 class="text-lg sm:text-2xl font-bold text-red-600 tracking-wide">SM SPORT CENTER</h1>
@@ -65,7 +65,7 @@
         <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300 md:hidden"></div>
 
         <!-- /* ------------------------------- KONTEN HALAMAN ------------------------------- */ -->
-        <main class="flex-1 flex flex-col min-h-screen overflow-y-auto relative z-10 w-full">
+        <main class="flex-1 flex flex-col min-h-screen overflow-y-auto relative z-10 w-full pt-16 sm:pt-20">
             <!-- /* --------------------------------- HEADER --------------------------------- */ -->
             <header class="w-full flex flex-wrap items-center justify-between gap-3 px-4 sm:px-8 py-2 sm:py-4 bg-white fixed top-0 z-30 shadow-sm">
 

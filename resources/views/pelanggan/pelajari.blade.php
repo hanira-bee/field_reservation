@@ -36,7 +36,7 @@
                     SM Sport Center berkomitmen penuh untuk menghadirkan pengalaman berolahraga terbaik di arena premium berstandar turnamen nasional. Kami percaya bahwa kebugaran tubuh dan kebahagiaan komunitas berawal dari fasilitas lapangan yang aman, nyaman, dan mudah diakses oleh siapa saja.
                 </p>
                 <p class="font-roboto text-gray-500 text-sm leading-relaxed text-justify">
-                    Dengan sistem pemesanan online otomatis yang responsif, Anda tidak perlu lagi khawatir akan bentrok jadwal atau kehabisan slot sesi bermain bersama tim kebanggaan Anda.
+                    Dengan sistem pemesanan online, Anda tidak perlu lagi khawatir akan bentrok jadwal atau kehabisan slot sesi bermain bersama tim kebanggaan Anda.
                 </p>
 
                 <div class="pt-2">
@@ -56,7 +56,7 @@
                 <!-- Kotak Badge Mengambang "20+" Versi Sport Center -->
                 <div class="absolute -bottom-6 left-10 bg-white border border-gray-100 rounded-2xl shadow-xl p-4 sm:p-5 flex flex-col justify-center items-center text-center max-w-[150px] border-t-4 border-t-red-600">
                     <span class="font-prompt text-2xl sm:text-3xl font-black text-red-600 leading-none">5+</span>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mt-1">Pilihan Venue Premium</span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mt-1">Pilihan Lapangan Premium</span>
                 </div>
                 <!-- Mini Gambar Pendukung -->
                 <div class="absolute -right-4 -bottom-10 w-1/2 aspect-video rounded-xl overflow-hidden shadow-lg border-4 border-white hidden sm:block">
@@ -141,54 +141,119 @@
                 </p>
             </div>
 
-            <!-- Grid Foto Anggota Tim (4 Kolom Sesuai Gambar) -->
+            <!-- Grid Foto Anggota Tim dengan Efek Berputar 3D -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-                <!-- Anggota 1 -->
-                <div class="group bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition flex flex-col">
-                    <div class="w-full aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/team_manager.jpg') }}" alt="Team 1" class="w-full h-full object-cover group-hover:scale-103 transition duration-300">
-                    </div>
-                    <div class="p-4 bg-gray-900 text-white flex-grow">
-                        <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Verno Akhdan</h4>
-                        <p class="text-[11px] text-red-400 font-medium mt-0.5">Operational Manager</p>
+                <!-- ANGGOTA 1: Operational Manager -->
+                <div class="group h-[320px] perspective-1000 cursor-pointer">
+                    <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-hover:rotate-y-180">
+
+                        <!-- SISI DEPAN (Foto & Nama) -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl border border-gray-100 bg-white shadow-xs overflow-hidden flex flex-col">
+                            <div class="w-full aspect-square overflow-hidden bg-gray-100">
+                                <img src="{{ asset('images/team_manager.jpg') }}" alt="Verno Akhdan" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-4 bg-gray-900 text-white flex-grow flex flex-col justify-center items-start text-left">
+                                <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Verno Akhdan</h4>
+                                <p class="text-[11px] text-red-400 font-medium mt-0.5">Operational Manager</p>
+                            </div>
+                        </div>
+
+                        <!-- SISI BELAKANG (Deskripsi Pekerjaan) -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-gray-900 border border-gray-800 text-white p-6 flex flex-col justify-center items-center shadow-md">
+                            <span class="material-icons text-red-500 text-3xl mb-2">manage_accounts</span>
+                            <h4 class="font-prompt text-sm font-bold text-red-400">Job Description</h4>
+                            <p class="font-roboto text-xs text-gray-300 text-center leading-relaxed mt-2">
+                                Bertanggung jawab penuh atas kelancaran operasional harian arena, manajemen staf, kontrol kualitas fasilitas, serta mengawasi validitas sistem integrasi transaksi reservasi.
+                            </p>
+                        </div>
+
                     </div>
                 </div>
 
-                <!-- Anggota 2 -->
-                <div class="group bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition flex flex-col">
-                    <div class="w-full aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/team_event_organizer.jpg') }}" alt="Team 4" class="w-full h-full object-cover group-hover:scale-103 transition duration-300">
-                    </div>
-                    <div class="p-4 bg-gray-900 text-white flex-grow">
-                        <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Hyuda Santoso</h4>
-                        <p class="text-[11px] text-red-400 font-medium mt-0.5">Event Organizer</p>
+                <!-- ANGGOTA 2: Event Organizer -->
+                <div class="group h-[320px] perspective-1000 cursor-pointer">
+                    <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-hover:rotate-y-180">
+
+                        <!-- SISI DEPAN -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl border border-gray-100 bg-white shadow-xs overflow-hidden flex flex-col">
+                            <div class="w-full aspect-square overflow-hidden bg-gray-100">
+                                <img src="{{ asset('images/team_event_organizer.jpg') }}" alt="Hyuda Santoso" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-4 bg-gray-900 text-white flex-grow flex flex-col justify-center items-start text-left">
+                                <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Hyuda Santoso</h4>
+                                <p class="text-[11px] text-red-400 font-medium mt-0.5">Event Organizer</p>
+                            </div>
+                        </div>
+
+                        <!-- SISI BELAKANG -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-gray-900 border border-gray-800 text-white p-6 flex flex-col justify-center items-center shadow-md">
+                            <span class="material-icons text-red-500 text-3xl mb-2">emoji_events</span>
+                            <h4 class="font-prompt text-sm font-bold text-red-400">Job Description</h4>
+                            <p class="font-roboto text-xs text-gray-300 text-center leading-relaxed mt-2">
+                                Menyusun, merencanakan, dan mengeksekusi kegiatan turnamen bulu tangkis maupun futsal komunitas, serta mengelola kerja sama sponsor untuk meramaikan event di Sport Center.
+                            </p>
+                        </div>
+
                     </div>
                 </div>
 
-                <!-- Anggota 3 -->
-                <div class="group bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition flex flex-col">
-                    <div class="w-full aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/team_customer_service.jpg') }}" alt="Team 2" class="w-full h-full object-cover group-hover:scale-103 transition duration-300">
-                    </div>
-                    <div class="p-4 bg-gray-900 text-white flex-grow">
-                        <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Budi Pratama</h4>
-                        <p class="text-[11px] text-red-400 font-medium mt-0.5">Customer Service</p>
+                <!-- ANGGOTA 3: Customer Service -->
+                <div class="group h-[320px] perspective-1000 cursor-pointer">
+                    <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-hover:rotate-y-180">
+
+                        <!-- SISI DEPAN -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl border border-gray-100 bg-white shadow-xs overflow-hidden flex flex-col">
+                            <div class="w-full aspect-square overflow-hidden bg-gray-100">
+                                <img src="{{ asset('images/team_customer_service.jpg') }}" alt="Budi Pratama" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-4 bg-gray-900 text-white flex-grow flex flex-col justify-center items-start text-left">
+                                <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Budi Pratama</h4>
+                                <p class="text-[11px] text-red-400 font-medium mt-0.5">Customer Service</p>
+                            </div>
+                        </div>
+
+                        <!-- SISI BELAKANG -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-gray-900 border border-gray-800 text-white p-6 flex flex-col justify-center items-center shadow-md">
+                            <span class="material-icons text-red-500 text-3xl mb-2">support_agent</span>
+                            <h4 class="font-prompt text-sm font-bold text-red-400">Job Description</h4>
+                            <p class="font-roboto text-xs text-gray-300 text-center leading-relaxed mt-2">
+                                Melayani keluhan, membantu kendala teknis pembuatan akun pelanggan, mengonfirmasi pengajuan verifikasi pembatalan, serta menyambut tim olahraga yang datang ke meja resepsionis.
+                            </p>
+                        </div>
+
                     </div>
                 </div>
 
-                <!-- Anggota 4 -->
-                <div class="group bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition flex flex-col">
-                    <div class="w-full aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/team_cleaning.jpg') }}" alt="Team 3" class="w-full h-full object-cover group-hover:scale-103 transition duration-300">
-                    </div>
-                    <div class="p-4 bg-gray-900 text-white flex-grow">
-                        <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Janitor</h4>
-                        <p class="text-[11px] text-red-400 font-medium mt-0.5">Maintenance Team</p>
+                <!-- ANGGOTA 4: Maintenance Team -->
+                <div class="group h-[320px] perspective-1000 cursor-pointer">
+                    <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-hover:rotate-y-180">
+
+                        <!-- SISI DEPAN -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl border border-gray-100 bg-white shadow-xs overflow-hidden flex flex-col">
+                            <div class="w-full aspect-square overflow-hidden bg-gray-100">
+                                <img src="{{ asset('images/team_cleanmain.png') }}" alt="Janitor" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-4 bg-gray-900 text-white flex-grow flex flex-col justify-center items-start text-left">
+                                <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Janitor & Technical Staff</h4>
+                                <p class="text-[11px] text-red-400 font-medium mt-0.5">Cleaning & Maintenance Team</p>
+                            </div>
+                        </div>
+
+                        <!-- SISI BELAKANG -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-gray-900 border border-gray-800 text-white p-6 flex flex-col justify-center items-center shadow-md">
+                            <span class="material-icons text-red-500 text-3xl mb-2">cleaning_services</span>
+                            <h4 class="font-prompt text-sm font-bold text-red-400">Job Description</h4>
+                            <p class="font-roboto text-xs text-gray-300 text-center leading-relaxed mt-2">
+                                Menjaga kebersihan total seluruh area lapangan, memastikan toilet steril, membersihkan debu lantai / rumput sehabis sesi tanding, serta pemeliharaan fasilitas lapangan agar tetap prima.
+                            </p>
+                        </div>
+
                     </div>
                 </div>
 
             </div>
+
         </div>
 
     </div> <!-- Penutup Max-w-7xl Inner -->

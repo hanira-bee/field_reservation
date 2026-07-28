@@ -132,33 +132,41 @@ class HomeController extends Controller
         $lapangan = Lapangan::findOrFail($id);
         $tanggalDipilih = $request->get('tanggal', Carbon::today()->toDateString());
 
-        // Mengambil slot_jam yang sudah dibooking pada tanggal terpilih
-        $jamTerbookingRaw = Reservasi::where('lapangan_id', $id)
-            ->where('tgl_reservasi', $tanggalDipilih)
-            ->where('status_reservasi', '!=', 'cancelled')
-            ->pluck('slot_jam')
-            ->map(function ($time) {
-                return Carbon::parse($time)->format('H:i'); // Mengubah format "08:00:00" dari MySQL menjadi "08:00"
-            })
-            ->toArray();
-
-        // Definisi master sesi 1 jam (Sesuai dengan kode perbaikan Blade)
-        $sesi1Jam = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00'];
-
-        // Definisi master sesi 2 jam (Sesuai dengan teks rentang waktu yang Anda minta)
-        $sesi2Jam = ['08:00 - 10:00', '10:00 - 12:00', '12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'];
-
         // Mengatur penanggalan navigasi rentang minggu (< > pada kalender)
         $date = Carbon::parse($tanggalDipilih);
         $statusHari = $date->isWeekend() ? 'Weekend' : 'Weekday';
         $prevWeekString = $date->copy()->subWeek()->toDateString();
         $nextWeekString = $date->copy()->addWeek()->toDateString();
-        $startOfWeek = $date->copy()->startOfWeek(Carbon::SUNDAY)->toDateString();
 
+        // Tentukan hari awal (Minggu) dan akhir (Sabtu) dalam minggu tersebut
+        $startOfWeek = $date->copy()->startOfWeek(Carbon::SUNDAY)->toDateString();
+        $endOfWeek = $date->copy()->endOfWeek(Carbon::SATURDAY)->toDateString();
+
+        // PERBAIKAN UTAMA: Ambil seluruh data booking dalam rentang 1 minggu penuh
+        $reservasiMingguan = Reservasi::where('lapangan_id', $id)
+            ->whereBetween('tgl_reservasi', [$startOfWeek, $endOfWeek]) // Cari dari minggu sampai sabtu
+            ->where('status_reservasi', '!=', 'cancelled')
+            ->get();
+
+        // Strukturkan data ke dalam matriks dua dimensi [tanggal][jam] agar mudah dibaca di Blade
+        $matriksBooking = [];
+        foreach ($reservasiMingguan as $res) {
+            $tgl = $res->tgl_reservasi;
+            $jam = Carbon::parse($res->slot_jam)->format('H:i');
+            $matriksBooking[$tgl][] = $jam; // Contoh hasil: $matriksBooking['2026-07-28'] = ['08:00', '10:00']
+        }
+
+        // Definisi master sesi 1 jam
+        $sesi1Jam = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+
+        // Definisi master sesi 2 jam
+        $sesi2Jam = ['08:00 - 10:00', '10:00 - 12:00', '12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00', '18:00 - 20:00'];
+
+        // Kirim data matriksBooking ke Blade (menggantikan jamTerbookingRaw yang lama)
         return view('pelanggan.detail', compact(
             'lapangan',
             'tanggalDipilih',
-            'jamTerbookingRaw',
+            'matriksBooking',
             'sesi1Jam',
             'sesi2Jam',
             'statusHari',
@@ -167,6 +175,7 @@ class HomeController extends Controller
             'nextWeekString'
         ));
     }
+
 
     public function pelajari()
     {

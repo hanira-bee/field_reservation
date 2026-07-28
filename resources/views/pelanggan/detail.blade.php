@@ -31,10 +31,10 @@
             <!-- memeriksa apakah kolam gambar di database memiliki isi -->
             @if(!empty($lapangan->gambar))
                 <!-- membaca file gambar dinamis yang diupload admin ke folder public/images -->
-                <img src="{{ asset('images/' . $image) }}" alt="{{ $lapangan->nama_lapangan }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
+                <img src="{{ asset('images/' . $lapangan->gambar) }}" alt="{{ $lapangan->nama_lapangan }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
             @else
                 <!-- gambar cadangan jika admin mengosongkan foto saat input lapangan baru -->
-                <img src="{{ asset('images/futsal_outdoor.jpg') }}" alt="Default Banner" class="w-full h-full object-cover group-hover:scale-105 transition-tranform duration-500 ease-in-out">
+                <img src="{{ asset('images/banner-home1.jpg') }}" alt="Default Banner" class="w-full h-full object-cover group-hover:scale-105 transition-tranform duration-500 ease-in-out">
             @endif
         </div>
 
@@ -66,17 +66,23 @@
                             <p class="text-sm font-bold text-gray-600">{{ $lapangan->jenis_lapangan }}</p>
                         </div>
 
-                        <!-- Pilihan Mode Sesi Aktif -->
-                        <div>
-                            <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Mode Durasi Sesi</span>
-                            <div class="inline-flex rounded-lg border border-gray-200 p-1 bg-red-600 text-xs font-bold">
-                                <button type="button" id="btn-1jam" onclick="switchPaket(1, {{ $lapangan->harga_per_jam }})" class="px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-xs transition">
-                                    Sesi 1 Jam
-                                </button>
-                                <button type="button" id="btn-2jam" onclick="switchPaket(2, {{ $lapangan->harga_per_jam * 2 }})" class="px-3 py-1.5 rounded-md text-white hover:text-gray-800 transition">
-                                    Paket 2 Jam
-                                </button>
-                            </div>
+                        <!-- Pilihan Mode Sesi Aktif --> 
+                        <div> 
+                            <span class="text-xs font-semibold text-gray-400 uppercase block mb-1">Mode Durasi Sesi</span> 
+                            <!-- Mengubah bg-red-600 menjadi bg-gray-100 agar warna dasar netral dan estetis -->
+                            <div class="inline-flex rounded-lg border border-gray-200 p-1 bg-gray-100 text-xs font-bold"> 
+                                
+                                <button type="button" id="btn-1jam" onclick="switchPaket(1, {{ $lapangan->harga_per_jam }})" 
+                                        class="px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-sm transition-all duration-150"> 
+                                    Sesi 1 Jam 
+                                </button> 
+                                
+                                <button type="button" id="btn-2jam" onclick="switchPaket(2, {{ $lapangan->harga_per_jam * 2 }})" 
+                                        class="px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-800 transition-all duration-150"> 
+                                    Paket 2 Jam 
+                                </button> 
+                                
+                            </div> 
                         </div>
 
                         <!-- Daftar Fasilitas -->
@@ -163,65 +169,71 @@
                 </div>
             </div>
 
-            <!-- TAMPILAN GRID KALENDER MINGGUAN (7 KOLOM RESPONSIVE) -->
-            <div class="w-full overflow-x-auto pb-2">
-                <div class="grid grid-cols-7 gap-4 min-w-[900px] lg:min-w-0">
+            <!-- TAMPILAN GRID KALENDER MINGGUAN (7 KOLOM RESPONSIVE) --> 
+            <div class="w-full overflow-x-auto pb-2"> 
+                <div class="grid grid-cols-7 gap-4 min-w-[900px] lg:min-w-0"> 
+                    @for ($i = 0; $i < 7; $i++) 
+                        @php 
+                            $hariH = \Carbon\Carbon::parse($startOfWeek)->copy()->addDays($i); 
+                            $tanggalString = $hariH->toDateString(); 
+                            $isHariIniAsli = $tanggalString === \Carbon\Carbon::today()->toDateString(); 
+                            $isMasaLalu = $hariH->isPast() && !$hariH->isToday(); 
+                        @endphp 
+                        
+                        <!-- Kotak Kolom Per Hari --> 
+                        <div class="rounded-xl p-3 transition border flex flex-col {{ $isHariIniAsli ? 'bg-amber-50/40 border-amber-300 ring-2 ring-amber-100' : 'bg-gray-50/50 border-gray-100' }}"> 
+                            
+                            <!-- Label Nama Hari & Tanggal --> 
+                            <div class="text-center pb-2 mb-3 border-b border-gray-200/60"> 
+                                <p class="text-xs font-bold {{ $isHariIniAsli ? 'text-amber-700' : 'text-blue-600' }}"> 
+                                    {{ $hariH->isoFormat('ddd') }} {{ $hariH->format('n/j') }} 
+                                </p> 
+                            </div> 
 
-                    @for ($i = 0; $i < 7; $i++)
-                        @php
-                        $hariH=\Carbon\Carbon::parse($startOfWeek)->copy()->addDays($i);
-                        $tanggalString = $hariH->toDateString();
-                        $isHariIniAsli = $tanggalString === \Carbon\Carbon::today()->toDateString();
-                        $isMasaLalu = $hariH->isPast() && !$hariH->isToday();
-                        @endphp
+                            <!-- Tempat Penampungan Sesi Jam Kontainer --> 
+                            
+                            <!-- Sesi 1 Jam (Aktif Pertama Kali) --> 
+                            <div class="wrapper-sesi-1jam space-y-1.5 flex-grow"> 
+                                @foreach($sesi1Jam as $sesi) 
+                                    @php 
+                                        // Cek apakah ada record booking untuk tanggal spesifik ini dan jam sesi ini 
+                                        $sudahDihuni = isset($matriksBooking[$tanggalString]) && in_array($sesi, $matriksBooking[$tanggalString]); 
+                                    @endphp 
+                                    @if($isMasaLalu) 
+                                        <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] text-center cursor-not-allowed">Closed</div> 
+                                    @elseif($sudahDihuni) 
+                                        <div class="py-1.5 px-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-[10px] font-bold text-center cursor-not-allowed">Booked</div> 
+                                    @else 
+                                        <a href="{{ route('reservasi', ['lapangan_id' => $lapangan->id, 'tanggal' => $tanggalString, 'jam' => $sesi]) }}" class="py-1.5 px-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-100 rounded text-[10px] font-bold text-center block transition">{{ $sesi }}</a> 
+                                    @endif 
+                                @endforeach 
+                            </div> 
 
-                        <!-- Kotak Kolom Per Hari -->
-                        <div class="rounded-xl p-3 transition border flex flex-col {{ $isHariIniAsli ? 'bg-amber-50/40 border-amber-300 ring-2 ring-amber-100' : 'bg-gray-50/50 border-gray-100' }}">
+                            <!-- Sesi 2 Jam (PERBAIKAN BESAR: Menggunakan $sesi2Jam dan Memotong String Jam Mulai) --> 
+                            <div class="wrapper-sesi-2jam space-y-1.5 flex-grow hidden"> 
+                                @foreach($sesi2Jam as $sesi) 
+                                    @php 
+                                        // FIX 1: Potong teks rentang waktu ambil 5 karakter awal jam mulainya saja (Contoh: "08:00")
+                                        $jamMulaiSesi2 = substr($sesi, 0, 5);
+                                        
+                                        // FIX 2: Cocokkan jamMulaiSesi2 yang bersih dengan data di matriks database
+                                        $sudahDihuni = isset($matriksBooking[$tanggalString]) && in_array($jamMulaiSesi2, $matriksBooking[$tanggalString]); 
+                                    @endphp 
+                                    @if($isMasaLalu) 
+                                        <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] text-center cursor-not-allowed">Closed</div> 
+                                    @elseif($sudahDihuni) 
+                                        <div class="py-1.5 px-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-[10px] font-bold text-center cursor-not-allowed">Booked</div> 
+                                    @else 
+                                        <a href="{{ route('reservasi', ['lapangan_id' => $lapangan->id, 'tanggal' => $tanggalString, 'jam' => $sesi]) }}" class="py-1.5 px-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-100 rounded text-[10px] font-bold text-center block transition">{{ $sesi }}</a> 
+                                    @endif 
+                                @endforeach 
+                            </div> 
 
-                            <!-- Label Nama Hari & Tanggal -->
-                            <div class="text-center pb-2 mb-3 border-b border-gray-200/60">
-                                <p class="text-xs font-bold {{ $isHariIniAsli ? 'text-amber-700' : 'text-blue-600' }}">
-                                    {{ $hariH->isoFormat('ddd') }} {{ $hariH->format('n/j') }}
-                                </p>
-                            </div>
-
-                            <!-- Tempat Penampungan Sesi Jam Kontainer -->
-                            <!-- Sesi 1 Jam (Aktif Pertama Kali) -->
-                            <div class="wrapper-sesi-1jam space-y-1.5 flex-grow">
-                                @foreach($sesi1Jam as $sesi)
-                                @php $sudahDihuni = in_array($sesi, $jamTerbookingRaw); @endphp
-                                @if($isMasaLalu)
-                                <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] text-center cursor-not-allowed">Closed</div>
-                                @elseif($sudahDihuni)
-                                <div class="py-1.5 px-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-[10px] font-bold text-center cursor-not-allowed">Booked</div>
-                                @else
-                                <a href="{{ route('reservasi', ['lapangan_id' => $lapangan->id, 'tanggal' => $tanggalString, 'jam' => $sesi]) }}" class="py-1.5 px-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-100 rounded text-[10px] font-bold text-center block transition">{{ $sesi }}</a>
-                                @endif
-                                @endforeach
-                            </div>
-
-                            <!-- Sesi 2 Jam (Dikendalikan oleh Javascript nanti) -->
-                            <div class="wrapper-sesi-2jam space-y-1.5 flex-grow hidden">
-                                @foreach($sesi2Jam as $sesi)
-                                @php
-                                $jamMulaiSesi2 = substr($sesi, 0, 5);
-                                $sudahDihuni = in_array($jamMulaiSesi2, $jamTerbookingRaw);
-                                @endphp
-                                @if($isMasaLalu)
-                                <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] text-center cursor-not-allowed">Closed</div>
-                                @elseif($sudahDihuni)
-                                <div class="py-1.5 px-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-[10px] font-bold text-center cursor-not-allowed">Booked</div>
-                                @else
-                                <a href="{{ route('reservasi', ['lapangan_id' => $lapangan->id, 'tanggal' => $tanggalString, 'jam' => $sesi]) }}" class="py-1.5 px-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-100 rounded text-[10px] font-bold text-center block transition">{{ $sesi }}</a>
-                                @endif
-                                @endforeach
-                            </div>
-
-                        </div> <!-- Penutup Kotak Kolom Per Hari -->
-                        @endfor
-
-                </div>
+                        </div> <!-- Penutup Kotak Kolom Per Hari --> 
+                    @endfor 
+                </div> 
             </div>
+
             <!-- PANEL LEGENDA KETERANGAN STATUS WARNA -->
             <div class="mt-6 flex flex-wrap gap-4 text-xs font-bold text-gray-500 border-t border-gray-100 pt-4">
                 <div class="flex items-center gap-1.5">
@@ -243,35 +255,51 @@
     </div> <!-- Penutup Pembungkus Kontainer Utama max-w-7xl -->
 </section>
 
-<!-- KODE JAVASCRIPT SWITCHER DINAMIS UNTUK STRUKTUR TERBARU -->
+<!-- KODE JAVASCRIPT SWITCHER DINAMIS UNTUK STRUKTUR KALENDER MINGGUAN -->
 <script>
-    function switchPaket(durasi, hargaFinal) {
-        // Ambil seluruh elemen kontainer sesi 1 jam dan 2 jam yang ada di setiap kolom hari
-        const wrappers1Jam = document.querySelectorAll('.wrapper-sesi-1jam');
-        const wrappers2Jam = document.querySelectorAll('.wrapper-sesi-2jam');
+function switchPaket(durasi, hargaFinal) {
+    // 1. Ambil seluruh kontainer sesi jam yang tersebar di 7 hari kalender
+    const wrappers1Jam = document.querySelectorAll('.wrapper-sesi-1jam');
+    const wrappers2Jam = document.querySelectorAll('.wrapper-sesi-2jam');
+    
+    const btn1 = document.getElementById('btn-1jam');
+    const btn2 = document.getElementById('btn-2jam');
+    const labelHarga = document.getElementById('label-harga-sewa');
 
-        const btn1 = document.getElementById('btn-1jam');
-        const btn2 = document.getElementById('btn-2jam');
+    // 2. Fungsi pembuat format mata uang Rupiah
+    const formatter = new Intl.NumberFormat('id-ID', { 
+        style: 'currency', 
+        currency: 'IDR', 
+        minimumFractionDigits: 0 
+    });
 
-        if (durasi === 1) {
-            // Tampilkan 1 jam, sembunyikan 2 jam
-            wrappers1Jam.forEach(el => el.classList.remove('hidden'));
-            wrappers2Jam.forEach(el => el.classList.add('hidden'));
-
-            // Atur warna aktif tombol 1 jam
-            btn1.className = "px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-xs transition";
-            btn2.className = "px-3 py-1.5 rounded-md text-white hover:text-gray-800 transition";
-        } else {
-            // Tampilkan 2 jam, sembunyikan 1 jam
-            wrappers1Jam.forEach(el => el.classList.add('hidden'));
-            wrappers2Jam.forEach(el => el.classList.remove('hidden'));
-
-            // Atur warna aktif tombol 2 jam
-            btn2.className = "px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-xs transition";
-            btn1.className = "px-3 py-1.5 rounded-md text-white hover:text-gray-800 transition";
-        }
+    // 3. Eksekusi perpindahan kelas
+    if (durasi === 1) {
+        // Tampilkan sesi 1 jam, sembunyikan sesi 2 jam
+        wrappers1Jam.forEach(el => el.classList.remove('hidden'));
+        wrappers2Jam.forEach(el => el.classList.add('hidden'));
+        
+        if(labelHarga) labelHarga.innerText = formatter.format(hargaFinal) + " / Jam";
+        
+        // Aktifkan gaya aktif tombol 1 jam
+        btn1.className = "px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-sm transition-all duration-150";
+        btn2.className = "px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-800 transition-all duration-150";
+    } else {
+        // Tampilkan sesi 2 jam, sembunyikan sesi 1 jam
+        wrappers1Jam.forEach(el => el.classList.add('hidden'));
+        // PERBAIKAN: Menghapus total class hidden agar grid 7 kolom terbuka lebar
+        wrappers2Jam.forEach(el => el.classList.remove('hidden'));
+        
+        if(labelHarga) labelHarga.innerText = formatter.format(hargaFinal) + " / Paket 2 Jam";
+        
+        // Aktifkan gaya aktif tombol 2 jam
+        btn2.className = "px-3 py-1.5 rounded-md bg-white text-gray-800 shadow-sm transition-all duration-150";
+        btn1.className = "px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-800 transition-all duration-150";
     }
+}
 </script>
+
+
 
 
 @endsection

@@ -73,11 +73,20 @@
                 <textarea name="catatan" rows="4" class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2" placeholder="Tambahkan catatan khusus Anda (misal: sewa raket, rompi, dll.)">{{ old('catatan') }}</textarea>
             </div>
 
-            <!-- 8. Submit Button -->
-            <div class="md:col-span-2">
-                <button type="submit" class="w-full md:w-auto rounded-lg bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700 transition">
-                    Kirim Permohonan Reservasi
-                </button>
+            <!-- 8. Submit Button & Kembali --> 
+            <div class="flex flex-col sm:flex-row gap-4">
+                <!-- Tombol Kembali Dinamis Menuju Detail Lapangan yang Dipilih -->
+                <div class="w-full sm:w-auto"> 
+                    <a href="{{ route('lapangan.detail', $defaultData['lapangan_id']) }}" class="w-full md:w-auto text-center block rounded-lg bg-gray-200 hover:bg-gray-300 px-6 py-3 font-semibold text-gray-700 transition">
+                        Kembali
+                    </a> 
+                </div> 
+
+                <div class="w-full sm:w-auto"> 
+                    <button type="submit" class="w-full md:w-auto rounded-lg bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700 transition"> 
+                        Kirim Permohonan Reservasi 
+                    </button> 
+                </div>
             </div>
         </form>
     </div>

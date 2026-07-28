@@ -7,7 +7,7 @@
         <p class="mt-3 text-gray-600">Hubungi kami melalui informasi di bawah ini.</p>
         <div class="mt-8 space-y-4 text-gray-700">
             <p><strong>Email:</strong> support@sportcenter.com</p>
-            <p><strong>Telepon:</strong> +62 812-3456-7890</p>
+            <p><strong>Telepon:</strong> +62 891 2345 6789</p>
         </div>
     </div>
 </section>

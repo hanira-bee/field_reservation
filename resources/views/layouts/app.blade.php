@@ -45,17 +45,17 @@
                     </span>
                 </a>
 
-                <!-- <a href="{{ route('reservasi') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('reservasi') ? $activeClass : $normalClass }}">
-                    <i class="fas fa-calendar-check text-sm sm:text-base w-5 sm:w-6 text-center"></i>
-                    <span class="text-sm sm:text-base">
-                        <h2>Reservasi</h2>
-                    </span>
-                </a> -->
-
                 <a href="{{ route('kontak') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('kontak') ? $activeClass : $normalClass }}">
                     <i class="fas fa-envelope text-sm sm:text-base w-5 sm:w-6 text-center"></i>
                     <span class="text-sm sm:text-base">
                         <h2>Kontak Kami</h2>
+                    </span>
+                </a>
+                
+                <a href="{{ route('pelajari') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('pelajari') ? $activeClass : $normalClass }}">
+                    <i class="fas fa-table-cells text-sm sm:text-base w-5 sm:w-6 text-center"></i>
+                    <span class="text-sm sm:text-base">
+                        <h2>Tentang Kami</h2>
                     </span>
                 </a>
             </nav>
@@ -83,8 +83,8 @@
                 <nav class="font-prompt hidden md:flex items-center gap-1 sm:gap-2">
                     <a href="{{ route('home') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('home') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Beranda</a>
                     <a href="{{ route('lapangan') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('lapangan') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Lapangan</a>
-                    <!-- <a href="{{ route('reservasi') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('reservasi') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Reservasi</a> -->
                     <a href="{{ route('kontak') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('kontak') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Kontak Kami</a>
+                    <a href="{{ route('pelajari') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('pelajari') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Tentang Kami</a>
                 </nav>
 
                 <!-- /* ----------------------------- USER PROFILE / AUTH BUTTONS ----------------------------- */ -->

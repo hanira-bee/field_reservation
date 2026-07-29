@@ -178,7 +178,9 @@
                         $hariH=\Carbon\Carbon::parse($startOfWeek)->copy()->addDays($i);
                         $tanggalString = $hariH->toDateString();
                         $isHariIniAsli = $tanggalString === \Carbon\Carbon::today()->toDateString();
-                        $isMasaLalu = $hariH->isPast() && !$hariH->isToday();
+
+                        // HARI PASALALU UMUM: Jika tanggalnya hari kemarin
+                        $isTanggalMasaLalu = $hariH->isPast() && !$hariH->isToday();
                         @endphp
 
                         <!-- Kotak Kolom Per Hari -->
@@ -197,45 +199,50 @@
                             <div class="wrapper-sesi-1jam space-y-1.5 flex-grow">
                                 @foreach($sesi1Jam as $sesi)
                                 @php
-                                // 1. Cek apakah jam ini dipesan langsung oleh orang lain
-                                $bookingLangsung = isset($matriksBooking[$tanggalString][$sesi]);
+                                // PERBAIKAN AKURASI UTAMA: Gabungkan tanggal hari ini dengan jam sesi untuk pengecekan absolut
+                                $waktuSesiKonkrit = \Carbon\Carbon::parse($tanggalString . ' ' . $sesi);
 
-                                // 2. Cek apakah jam sebelumnya diambil oleh orang lain dengan Paket 2 Jam
+                                // Sesi otomatis CLOSED jika tanggalnya masa lalu ATAU jika hari ini tetapi jam sesinya sudah lewat/sedang berjalan
+                                $isSesiDitutup = $waktuSesiKonkrit->isPast();
+
+                                $bookingLangsung = isset($matriksBooking[$tanggalString][$sesi]);
                                 $jamMundur1Jam = \Carbon\Carbon::parse($sesi)->subHour()->format('H:i');
                                 $terpakaiPaket2Jam = isset($matriksBooking[$tanggalString][$jamMundur1Jam]) &&
                                 $matriksBooking[$tanggalString][$jamMundur1Jam]['durasi_paket_2_jam'] === true;
 
-                                // Kombinasikan syarat kuncian jam
                                 $sudahDihuni = $bookingLangsung || $terpakaiPaket2Jam;
                                 @endphp
 
-                                @if($isMasaLalu)
-                                <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] text-center cursor-not-allowed">Closed</div>
+                                @if($isSesiDitutup)
+                                <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] text-center cursor-not-allowed select-none">Closed</div>
                                 @elseif($sudahDihuni)
                                 <div class="py-1.5 px-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-[10px] font-bold text-center cursor-not-allowed">Booked</div>
                                 @else
                                 <a href="{{ route('reservasi', ['lapangan_id' => $lapangan->id, 'tanggal' => $tanggalString, 'jam' => $sesi]) }}" class="py-1.5 px-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-100 rounded text-[10px] font-bold text-center block transition">{{ $sesi }}</a>
                                 @endif
                                 @endforeach
-
                             </div>
+
 
                             <!-- Sesi 2 Jam (PERBAIKAN BESAR: Menggunakan $sesi2Jam dan Memotong String Jam Mulai) -->
                             <div class="wrapper-sesi-2jam space-y-1.5 flex-grow hidden">
                                 @foreach($sesi2Jam as $sesi)
                                 @php
-                                $jamMulaiSesi2 = substr($sesi, 0, 5); // Ambil "08:00"
-                                $jamTengahSesi2 = \Carbon\Carbon::parse($jamMulaiSesi2)->addHour()->format('H:i'); // Hitung pertengahan "09:00"
+                                $jamMulaiSesi2 = substr($sesi, 0, 5); // Potong teks ambil "08:00"
+                                $jamTengahSesi2 = \Carbon\Carbon::parse($jamMulaiSesi2)->addHour()->format('H:i');
 
-                                // Paket 2 jam langsung hangus/terkunci jika jam mulai ATAU jam tengahnya sudah dihuni oleh transaksi apa pun
+                                // PERBAIKAN AKURASI UTAMA: Deteksi penutupan paket 2 jam berdasarkan jam mulainya
+                                $waktuSesi2Konkrit = \Carbon\Carbon::parse($tanggalString . ' ' . $jamMulaiSesi2);
+                                $isSesiDitutup = $waktuSesi2Konkrit->isPast();
+
                                 $mulaiTerpakai = isset($matriksBooking[$tanggalString][$jamMulaiSesi2]);
                                 $tengahTerpakai = isset($matriksBooking[$tanggalString][$jamTengahSesi2]);
 
                                 $sudahDihuni = $mulaiTerpakai || $tengahTerpakai;
                                 @endphp
 
-                                @if($isMasaLalu)
-                                <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] text-center cursor-not-allowed">Closed</div>
+                                @if($isSesiDitutup)
+                                <div class="py-1.5 px-2 bg-gray-100 text-gray-400 rounded text-[10px] text-center cursor-not-allowed select-none">Closed</div>
                                 @elseif($sudahDihuni)
                                 <div class="py-1.5 px-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-[10px] font-bold text-center cursor-not-allowed">Booked</div>
                                 @else

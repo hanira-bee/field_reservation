@@ -32,7 +32,7 @@
             Berbagai fasilitas untuk mendukung aktivitas olahraga Anda
         </p>
     </div>
-    <div class="grid grid-cols-1 gap-8 px-8 md:grid-cols-2">
+    <div class="grid grid-cols-1 gap-8 py-8 px-8 md:grid-cols-2">
         <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
             <i class="fas fa-futbol text-red-600 text-3xl mb-4"></i>
             <h3 class="text-xl font-semibold mb-2">Lapangan Futsal</h3>
@@ -43,12 +43,6 @@
             <h3 class="text-xl font-semibold mb-2">Lapangan Badminton</h3>
             <p class="text-gray-600">Pesan lapangan bulu tangkis pilihan Anda sekarang dan jadwalkan pertandingan terbaik minggu ini.</p>
         </div>
-    </div>
-
-    <div class="flex justify-center p-10">
-        <a href="{{ route('reservasi') }}" class="btn animate-bounce hover:animate-none px-6 py-3 bg-white text-lg text-red-600 font-semibold rounded-full shadow border-2 border-red-100 transform hover:scale-110 transition-all duration-150 ease-in-out">
-            Reservasi
-        </a>
     </div>
 </section>
 

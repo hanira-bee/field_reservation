@@ -17,6 +17,14 @@ Route::get('/pelajari', [HomeController::class, 'pelajari'])->name('pelajari');
 Route::middleware('auth')->group(function () {
     Route::get('/reservasi', [HomeController::class, 'reservasi'])->name('reservasi');
     Route::post('/reservasi', [HomeController::class, 'submitReservasi'])->name('reservasi.submit');
+    // riwayat
+    Route::get('/riwayat', [HomeController::class, 'riwayatIndex'])->name('pelanggan.riwayat');
+    Route::post('/riwayat/{id}/upload-bukti', [HomeController::class, 'uploadBuktiPembayaran'])->name('pelanggan.upload-bukti');
+    // profil
+    Route::get('/profil', [HomeController::class, 'profilEdit'])->name('pelanggan.profil.edit');
+    Route::put('/profil/update', [HomeController::class, 'profilUpdate'])->name('pelanggan.profil.update');
+    // batal reservasi
+    Route::post('/riwayat/{id}/batal-mandiri', [HomeController::class, 'batalMandiriPelanggan'])->name('pelanggan.batal-mandiri');
 });
 
 // Guest/tamu Route

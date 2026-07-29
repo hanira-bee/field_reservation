@@ -51,7 +51,7 @@
                         <h2>Kontak Kami</h2>
                     </span>
                 </a>
-                
+
                 <a href="{{ route('pelajari') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('pelajari') ? $activeClass : $normalClass }}">
                     <i class="fas fa-table-cells text-sm sm:text-base w-5 sm:w-6 text-center"></i>
                     <span class="text-sm sm:text-base">
@@ -91,33 +91,59 @@
                 <div class="font-rubik flex items-center gap-2 sm:gap-3 ml-auto md:ml-0">
                     @auth
                     <!-- TAMPILAN JIKA PENGGUNA SUDAH LOGIN -->
-                    <div class="flex items-center gap-3 bg-gray-50 border border-gray-100 pl-3 pr-2 py-1.5 rounded-full shadow-xs">
-                        <!-- Lingkaran Avatar Inisial Huruf Nama -->
-                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs sm:text-sm uppercase shadow-xs">
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        </div>
+                    <div class="relative inline-block text-left" id="user-profile-dropdown">
+                        <!-- Tombol Profil (Pemicu Klik) -->
+                        <button type="button" onclick="toggleDropdownProfil()" class="flex items-center gap-3 bg-gray-50 border border-gray-100 pl-3 pr-4 py-1.5 rounded-full shadow-xs hover:bg-gray-100 transition duration-150 focus:outline-none cursor-pointer">
+                            <!-- Lingkaran Avatar Inisial Huruf Nama -->
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs sm:text-sm uppercase shadow-xs">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
 
-                        <!-- Info Nama Pengguna -->
-                        <div class="hidden sm:block text-left max-w-[120px]">
-                            <p class="text-xs font-bold text-gray-800 truncate leading-none mb-0.5">{{ Auth::user()->name }}</p>
-                            <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider block">{{ Auth::user()->role }}</span>
-                        </div>
+                            <!-- Info Nama Pengguna -->
+                            <div class="hidden sm:block text-left max-w-[120px]">
+                                <p class="text-xs font-bold text-gray-800 truncate leading-none mb-0.5">{{ Auth::user()->name }}</p>
+                                <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider block">Menu Akun</span>
+                            </div>
+                            <!-- Ikon Panah Kecil -->
+                            <span class="material-icons text-gray-400 text-sm transition-transform duration-200" id="dropdown-arrow">expand_more</span>
+                        </button>
 
-                        <!-- Pembatas & Menu Tambahan -->
-                        <div class="flex items-center gap-1 border-l border-gray-200 pl-2 ml-1">
-                            @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" class="text-gray-500 hover:text-red-600 p-1 transition flex items-center" title="Dashboard Admin">
-                                <span class="material-icons text-lg sm:text-xl">dashboard</span>
-                            </a>
-                            @endif
+                        <!-- KOTAK KARTU MENU MELAYANG (DROPDOWN CARD) -->
+                        <!-- Sembunyikan secara default dengan class 'hidden' dan 'opacity-0' -->
+                        <div id="dropdown-menu-card" class="hidden opacity-0 transform scale-95 transition-all duration-150 absolute right-0 mt-2 w-52 rounded-2xl bg-white border border-gray-100 shadow-xl py-2 z-50 origin-top-right">
 
-                            <!-- Tombol Keluar POST Form -->
-                            <form method="POST" action="{{ route('logout') }}" class="inline">
-                                @csrf
-                                <button type="submit" class="text-gray-400 hover:text-red-600 p-1 transition flex items-center" title="Keluar">
-                                    <span class="material-icons text-lg sm:text-xl">logout</span>
-                                </button>
-                            </form>
+                            <!-- Header Kecil Info Akun -->
+                            <div class="px-4 py-2 border-b border-gray-50">
+                                <p class="text-xs font-black text-gray-800 truncate">{{ Auth::user()->name }}</p>
+                                <p class="text-[10px] text-gray-400 font-mono truncate mt-0.5">{{ Auth::user()->email }}</p>
+                            </div>
+
+                            <!-- Kumpulan Tautan Opsi Akun -->
+                            <div class="p-1 space-y-0.5 text-xs font-bold text-gray-600">
+                                <!-- Jika yang Login Admin: Sediakan Akses ke Dashboard -->
+                                @if (Auth::user()->role === 'admin')
+                                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition">
+                                    <span class="material-icons text-base">dashboard</span> Dashboard Admin
+                                </a>
+                                @endif
+
+                                <!-- Opsi 1: Riwayat Pesanan (Fitur Utama) -->
+                                <a href="{{ route('pelanggan.riwayat') }}" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition">
+                                    <span class="material-icons text-base">airplane_ticket</span> Riwayat Pesanan
+                                </a>
+
+                                <a href="{{ route('pelanggan.profil.edit') }}" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition">
+                                    <span class="material-icons text-base">manage_accounts</span> Edit Profil
+                                </a>
+
+                                <!-- Opsi 3: Tombol Keluar (Logout) -->
+                                <form method="POST" action="{{ route('logout') }}" class="block border-t border-gray-50 pt-1 mt-1">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-red-50 text-gray-400 hover:text-red-600 transition font-bold cursor-pointer">
+                                        <span class="material-icons text-base">logout</span> Keluar Akun
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     @else
@@ -153,9 +179,6 @@
                             <p class="text-red-100 text-sm leading-relaxed antialiased">
                                 SM Sport Center adalah platform reservasi lapangan olahraga premium terbaik untuk bulu tangkis dan futsal, baik arena indoor maupun outdoor. Pesan slot jadwal Anda secara online dengan mudah, cepat, dan aman sebelum kehabisan.
                             </p>
-                            <a href="{{ route('reservasi') }}" class="inline-block w-fit text-center bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-md text-sm tracking-wide transform hover:scale-105 transition-all duration-105 ease-in-out shadow-md">
-                                PESAN SEKARANG
-                            </a>
                         </div>
 
                         <div class="flex flex-col space-y-4">
@@ -207,6 +230,48 @@
             sidebar.classList.toggle('-translate-x-full');
             overlay.classList.toggle('hidden');
         }
+
+        // otomasi dropdown untuk profil
+        function toggleDropdownProfil() {
+            const card = document.getElementById('dropdown-menu-card');
+            const arrow = document.getElementById('dropdown-arrow');
+
+            if (card.classList.contains('hidden')) {
+                // Buka Dropdown dengan Efek Animasi
+                card.classList.remove('hidden');
+                setTimeout(() => {
+                    card.classList.remove('opacity-0', 'scale-95');
+                    card.classList.add('opacity-100', 'scale-100');
+                }, 10);
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                // Tutup Dropdown
+                card.classList.remove('opacity-100', 'scale-100');
+                card.classList.add('opacity-0', 'scale-95');
+                arrow.style.transform = 'rotate(0deg)';
+                setTimeout(() => {
+                    card.classList.add('hidden');
+                }, 150); // Sesuai durasi transition-all 150ms
+            }
+        }
+
+        // Fitur Pengaman UX: Menutup dropdown otomatis jika pengguna mengklik area luar profil
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('user-profile-dropdown');
+            const card = document.getElementById('dropdown-menu-card');
+            const arrow = document.getElementById('dropdown-arrow');
+
+            if (dropdown && !dropdown.contains(e.target)) {
+                if (card && !card.classList.contains('hidden')) {
+                    card.classList.remove('opacity-100', 'scale-100');
+                    card.classList.add('opacity-0', 'scale-95');
+                    if (arrow) arrow.style.transform = 'rotate(0deg)';
+                    setTimeout(() => {
+                        card.classList.add('hidden');
+                    }, 150);
+                }
+            }
+        });
     </script>
 </body>
 

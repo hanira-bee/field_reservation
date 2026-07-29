@@ -9,22 +9,66 @@ use App\Models\Reservasi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
-
-
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        // 1. Hitung total pendapatan bulan berjalan ini dari seluruh reservasi yang tidak dibatalkan
+        $awalBulanIni = \Carbon\Carbon::now()->startOfMonth()->toDateString();
+        $akhirBulanIni = \Carbon\Carbon::now()->endOfMonth()->toDateString();
+
+        $totalPendapatanBulanIni = Reservasi::whereBetween('tgl_reservasi', [$awalBulanIni, $akhirBulanIni])
+            ->where('status_reservasi', 'confirmed') // Hanya omzet lunas/disetujui
+            ->sum('total_biaya');
+
+
+        // 2. Hitung jumlah permohonan reservasi baru yang masuk dan masih butuh persetujuan (status: pending)
+        $jumlahReservasiBaru = Reservasi::where('status_reservasi', 'pending')->count();
+
+        // 3. Hitung jumlah total pelanggan (User dengan role 'pelanggan') yang terdaftar di sistem Anda
+        $totalPelanggan = User::where('role', 'pelanggan')->count();
+
+        // 4. Hitung berapa banyak jumlah arena lapangan yang saat ini berstatus aktif
+        $totalLapanganAktif = Lapangan::where('status_aktif', true)->count();
+
+        // 5. Mengambil 5 reservasi terbaru yang butuh tindakan verifikasi cepat oleh admin (Log Antrean Bukti)
+        $bookingButuhTindakan = Reservasi::with(['user', 'lapangan'])
+            ->where('status_reservasi', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // 6. Mengambil seluruh agenda pertandingan tim yang dijadwalkan tanding hari ini (Real-Time Hari Ini)
+        $jadwalHariIni = Reservasi::with(['user', 'lapangan'])
+            ->where('tgl_reservasi', Carbon::today()->toDateString())
+            ->where('status_reservasi', 'confirmed') // Hanya memunculkan yang sudah lunas disetujui
+            ->orderBy('slot_jam', 'asc')
+            ->get();
+
+        // Kirim semua variabel data di atas menuju halaman dashboard admin blade
+        return view('admin.dashboard', compact(
+            'totalPendapatanBulanIni',
+            'jumlahReservasiBaru',
+            'totalPelanggan',
+            'totalLapanganAktif',
+            'bookingButuhTindakan',
+            'jadwalHariIni'
+        ));
     }
 
     public function reservasiIndex(Request $request)
     {
-        // Ambil parameter filter status dari URL, default memunculkan status 'pending'
+        // PERBAIKAN: Default memunculkan status 'pending', tapi sekarang mengizinkan parameter 'cancelled'
         $statusFilter = $request->get('status', 'pending');
+
+        // Pastikan status yang dicari berada di antara 3 pilihan legal ini
+        if (!in_array($statusFilter, ['pending', 'confirmed', 'cancelled'])) {
+            $statusFilter = 'pending';
+        }
 
         // Ambil data reservasi terbaru beserta data user dan lapangan terkait (Eager Loading)
         $reservasis = Reservasi::with(['user', 'lapangan'])
@@ -35,6 +79,7 @@ class DashboardController extends Controller
 
         return view('admin.reservasi', compact('reservasis', 'statusFilter'));
     }
+
 
 
     public function updateStatusReservasi(Request $request, $id)
@@ -192,7 +237,7 @@ class DashboardController extends Controller
     public function akunIndex()
     {
         $saatIni = Auth::user();
-        
+
         $daftarSuperAdmin = User::where('role', 'super_admin')->orderBy('name', 'asc')->get();
         $daftarAdmin = User::where('role', 'admin')->orderBy('name', 'asc')->get();
         $daftarPelanggan = User::where('role', 'pelanggan')->orderBy('name', 'asc')->get();
@@ -335,26 +380,25 @@ class DashboardController extends Controller
         return redirect()->route('admin.akun.index')->with('success', 'Akun berhasil dihapus dari sistem secara permanen!');
     }
 
-        /* -------------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------------- */
     /*               MODUL LAPORAN KEUANGAN & PENCATATAN TRANSAKSI                */
     /* -------------------------------------------------------------------------- */
 
     // 1. Menampilkan Halaman Riwayat Transaksi Finansial & Filter Omzet
     public function laporanIndex(Request $request)
     {
-        // Mengambil filter bulan dan tahun dari URL, default bulan & tahun sekarang
         $bulanDipilih = $request->get('bulan', date('m'));
         $tahunDipilih = $request->get('tahun', date('Y'));
 
-        // Menarik data transaksi sewa yang sah (Status SUCCESS/PAID atau CONFIRMED, bukan Cancelled)
+        $awalBulanFilter = \Carbon\Carbon::createFromDate($tahunDipilih, $bulanDipilih, 1)->startOfMonth()->toDateString();
+        $akhirBulanFilter = \Carbon\Carbon::createFromDate($tahunDipilih, $bulanDipilih, 1)->endOfMonth()->toDateString();
+
         $transaksis = Reservasi::with(['user', 'lapangan'])
-            ->whereMonth('tgl_reservasi', $bulanDipilih)
-            ->whereYear('tgl_reservasi', $tahunDipilih)
-            ->where('status_reservasi', '!=', 'cancelled')
+            ->whereBetween('tgl_reservasi', [$awalBulanFilter, $akhirBulanFilter])
+            ->where('status_reservasi', 'confirmed') // Mengunci status lunas saja
             ->orderBy('tgl_reservasi', 'desc')
             ->get();
 
-        // Hitung matematika total omzet laba kotor di bulan tersebut
         $totalOmzet = $transaksis->sum('total_biaya');
 
         return view('admin.laporan.index', compact('transaksis', 'totalOmzet', 'bulanDipilih', 'tahunDipilih'));
@@ -366,30 +410,34 @@ class DashboardController extends Controller
         $bulanDipilih = $request->get('bulan', date('m'));
         $tahunDipilih = $request->get('tahun', date('Y'));
 
+        // PERBAIKAN: Hanya mengambil transaksi yang sudah disetujui/lunas (confirmed)
         $transaksis = Reservasi::with(['user', 'lapangan'])
             ->whereMonth('tgl_reservasi', $bulanDipilih)
             ->whereYear('tgl_reservasi', $tahunDipilih)
-            ->where('status_reservasi', '!=', 'cancelled')
+            ->where('status_reservasi', 'confirmed') // Mengunci status lunas saja
             ->orderBy('tgl_reservasi', 'asc')
             ->get();
 
         $totalOmzet = $transaksis->sum('total_biaya');
 
-        // Daftar nama bulan untuk judul header cetak PDF
         $namaBulan = [
-            '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
-            '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
-            '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember'
         ];
-        
+
         $periodeTeks = $namaBulan[$bulanDipilih] . ' ' . $tahunDipilih;
 
-        // Panggil fungsi facade DomPDF untuk merender file blade cetak khusus menjadi file PDF asli
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.laporan.cetak_pdf', compact('transaksis', 'totalOmzet', 'periodeTeks'));
-        
-        // Mengunduh file otomatis dengan nama bersih sesuai periode bulan
         return $pdf->download('Laporan_Keuangan_SM_SportCenter_' . $bulanDipilih . '_' . $tahunDipilih . '.pdf');
     }
-
-
 }

@@ -9,7 +9,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-100 pb-4">
         <div>
             <h1 class="text-3xl font-black text-red-600 uppercase tracking-tight">Kelola Akun</h1>
-            <p class="text-sm text-gray-400 font-medium">Manajemen hak akses terpisah antara Direksi Super Admin, Staf Operasional, dan Pelanggan.</p>
+            <p class="text-sm text-gray-800 font-normal">Manajemen hak akses terpisah antara Direksi Super Admin, Staf Operasional, dan Pelanggan.</p>
         </div>
         <!-- Tombol Tambah internal hanya muncul jika yang sedang login ber-role Super Admin -->
         @if($saatIni->role === 'super_admin')
@@ -38,10 +38,10 @@
         <h3 class="text-base font-black text-red-600 uppercase tracking-wider flex items-center gap-1">
             <span class="material-icons text-sm">admin_panel_settings</span> Kelompok Super Admin (Direksi)
         </h3>
-        <div class="w-full overflow-x-auto border border-gray-100 rounded-2xl shadow-xs">
+        <div class="w-full overflow-x-auto border border-gray-200 rounded-2xl shadow-xs">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                    <tr class="bg-gray-50 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                    <tr class="bg-gray-50 text-gray-800 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4">Nama</th>
                         <th class="py-3 px-4">Kontak Info</th>
                         <th class="py-3 px-4 text-center">Opsi Aksi</th>
@@ -51,7 +51,7 @@
                     @foreach($daftarSuperAdmin as $sa)
                         <tr class="hover:bg-gray-50/40">
                             <td class="py-3.5 px-4 font-bold text-gray-900">{{ $sa->name }}</td>
-                            <td class="py-3.5 px-4 text-xs font-mono text-gray-500">{{ $sa->email }} <br> {{ $sa->no_telepon }}</td>
+                            <td class="py-3.5 px-4 text-xs font-mono text-gray-700">{{ $sa->email }} <br> {{ $sa->no_telepon }}</td>
                             <td class="py-3.5 px-4 text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     <!-- Hanya sesama Super Admin yang bisa mengelola data pengurus internal -->
@@ -86,10 +86,10 @@
         <h3 class="text-base font-black text-gray-800 uppercase tracking-wider flex items-center gap-1">
             <span class="material-icons text-sm">assignment_ind</span> Kelompok Staf Admin (Operasional Lapangan)
         </h3>
-        <div class="w-full overflow-x-auto border border-gray-100 rounded-2xl shadow-xs">
+        <div class="w-full overflow-x-auto border border-gray-200 rounded-2xl shadow-xs">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                    <tr class="bg-gray-50 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                    <tr class="bg-gray-50 text-gray-800 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4">Nama Staf</th>
                         <th class="py-3 px-4">Kontak</th>
                         <th class="py-3 px-4 text-center">Opsi Aksi</th>
@@ -99,7 +99,7 @@
                     @foreach($daftarAdmin as $adm)
                         <tr class="hover:bg-gray-50/40">
                             <td class="py-3.5 px-4 font-bold text-gray-900">{{ $adm->name }}</td>
-                            <td class="py-3.5 px-4 text-xs font-mono text-gray-500">{{ $adm->email }} <br> {{ $adm->no_telepon }}</td>
+                            <td class="py-3.5 px-4 text-xs font-mono text-gray-700">{{ $adm->email }} <br> {{ $adm->no_telepon }}</td>
                             <td class="py-3.5 px-4 text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     <!-- Super Admin memegang wewenang penuh atas operasional staf -->
@@ -126,13 +126,13 @@
     <!--                          TABEL 3: DAFTAR PELANGGAN                      -->
     <!-- ----------------------------------------------------------------------- -->
     <div class="space-y-3">
-        <h3 class="text-base font-black text-gray-400 uppercase tracking-wider flex items-center gap-1">
+        <h3 class="text-base font-black text-gray-800 uppercase tracking-wider flex items-center gap-1">
             <span class="material-icons text-sm">people</span> Kelompok Akun Pelanggan (Masyarakat Umum)
         </h3>
-        <div class="w-full overflow-x-auto border border-gray-100 rounded-2xl shadow-xs">
+        <div class="w-full overflow-x-auto border border-gray-200 rounded-2xl shadow-xs">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                    <tr class="bg-gray-50 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                    <tr class="bg-gray-50 text-gray-800 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4">Nama Pelanggan</th>
                         <th class="py-3 px-4">Email / No WA</th>
                         <th class="py-3 px-4 text-center">Opsi Aksi</th>
@@ -142,7 +142,7 @@
                     @forelse($daftarPelanggan as $plg)
                         <tr class="hover:bg-gray-50/40">
                             <td class="py-3.5 px-4 font-bold text-gray-900">{{ $plg->name }}</td>
-                            <td class="py-3.5 px-4 text-xs font-mono text-gray-500">{{ $plg->email }} <br> {{ $plg->no_telepon }}</td>
+                            <td class="py-3.5 px-4 text-xs font-mono text-gray-700">{{ $plg->email }} <br> {{ $plg->no_telepon }}</td>
                             <td class="py-3.5 px-4 text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     <!-- Sesuai aturan, data pelanggan sensitif (tidak bisa diedit) -->

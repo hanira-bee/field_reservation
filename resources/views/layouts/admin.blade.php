@@ -22,16 +22,16 @@
         
         <!-- /* ------------------- ASIDE (SIDEBAR SEMI-PERMANEN) ------------------- */ --> 
         <!-- md:translate-x-0 mengunci posisi menetap di layar besar, -translate-x-full bersembunyi di HP -->
-        <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white shadow-xl md:shadow-none border-r border-gray-200 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col justify-between"> 
+        <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-red-600 shadow-xl md:shadow-none border-r border-gray-200 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col justify-between"> 
             <div>
                 <!-- Brand Title Sidebar -->
                 <div class="px-6 pt-6 flex items-center gap-2 mb-8"> 
-                    <span class="font-stack font-black text-red-600 text-base sm:text-lg lg:text-xl tracking-wider uppercase">SM ADMIN</span> 
+                    <span class="font-stack font-black text-white text-base sm:text-lg lg:text-xl tracking-wider uppercase">SM ADMIN</span> 
                 </div> 
                 
                 @php 
-                    $activeClass = 'bg-red-50 text-red-700 font-bold border-r-4 border-red-600'; 
-                    $normalClass = 'text-gray-500 hover:bg-gray-50 hover:text-red-600 font-semibold transition-all duration-150'; 
+                    $activeClass = 'bg-red-50 text-red-700 font-bold'; 
+                    $normalClass = 'text-white hover:bg-gray-50 hover:text-red-600 font-semibold transition-all duration-150'; 
                 @endphp 
                 
                 <!-- Kumpulan Menu Manajemen / Tools Kepengurusan -->
@@ -65,16 +65,16 @@
             </div>
 
             <!-- Identitas Akun Login Dasar Sidebar -->
-            <div class="p-4 border-t border-gray-100 bg-gray-50/50">
+            <div class="p-4 border-t border-gray-100 bg-red-50">
                 <div class="flex items-center justify-between">
                     <div class="truncate max-w-[130px]">
-                        <p class="text-xs font-black text-gray-800 truncate leading-none mb-1">{{ Auth::user()->name ?? 'Admin User' }}</p>
-                        <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block">{{ Auth::user()->role ?? 'ADMIN' }}</span>
+                        <p class="text-xs font-black text-red-600 truncate leading-none mb-1">{{ Auth::user()->name ?? 'Admin User' }}</p>
+                        <span class="text-[9px] font-black text-red-500 uppercase tracking-widest block">{{ Auth::user()->role ?? 'ADMIN' }}</span>
                     </div>
                     <!-- Form Logout POST -->
                     <form method="POST" action="{{ route('logout') }}" class="inline"> 
                         @csrf 
-                        <button type="submit" class="text-gray-400 hover:text-red-600 p-1 flex items-center transition" title="Keluar"> 
+                        <button type="submit" class="text-red-500 hover:text-red-600 p-1 flex items-center transition" title="Keluar"> 
                             <span class="material-icons text-lg">logout</span> 
                         </button> 
                     </form> 

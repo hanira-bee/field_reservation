@@ -9,7 +9,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-100 pb-4">
         <div>
             <h1 class="text-3xl font-black text-red-600 uppercase tracking-tight">Laporan Keuangan</h1>
-            <p class="text-sm text-gray-400 font-medium">Pencatatan riwayat omzet, akumulasi kas masuk, dan filter pembukuan bulanan.</p>
+            <p class="text-sm text-gray-800 font-normal">Pencatatan riwayat omzet, akumulasi kas masuk, dan filter pembukuan bulanan.</p>
         </div>
         
         <!-- Tombol Download Cetak PDF Resmi -->
@@ -69,7 +69,7 @@
     <div class="w-full overflow-x-auto border border-gray-100 rounded-2xl shadow-xs">
         <table class="w-full text-left border-collapse text-sm">
             <thead>
-                <tr class="bg-gray-50 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-gray-100">
+                <tr class="bg-gray-50 text-gray-800 text-xs font-bold uppercase tracking-wider border-b border-gray-200">
                     <th class="py-3 px-4">Tanggal Sewa</th>
                     <th class="py-3 px-4">Nama Pelanggan</th>
                     <th class="py-3 px-4">Arena Lapangan</th>

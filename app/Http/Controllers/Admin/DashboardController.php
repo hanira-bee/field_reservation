@@ -17,7 +17,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // 1. Hitung total pendapatan bulan berjalan ini dari seluruh reservasi yang tidak dibatalkan
+        // Hitung total pendapatan bulan berjalan ini dari seluruh reservasi yang tidak dibatalkan
         $awalBulanIni = \Carbon\Carbon::now()->startOfMonth()->toDateString();
         $akhirBulanIni = \Carbon\Carbon::now()->endOfMonth()->toDateString();
 
@@ -26,23 +26,23 @@ class DashboardController extends Controller
             ->sum('total_biaya');
 
 
-        // 2. Hitung jumlah permohonan reservasi baru yang masuk dan masih butuh persetujuan (status: pending)
+        // Hitung jumlah permohonan reservasi baru yang masuk dan masih butuh persetujuan (status: pending)
         $jumlahReservasiBaru = Reservasi::where('status_reservasi', 'pending')->count();
 
-        // 3. Hitung jumlah total pelanggan (User dengan role 'pelanggan') yang terdaftar di sistem Anda
+        // Hitung jumlah total pelanggan (User dengan role 'pelanggan') yang terdaftar di sistem 
         $totalPelanggan = User::where('role', 'pelanggan')->count();
 
-        // 4. Hitung berapa banyak jumlah arena lapangan yang saat ini berstatus aktif
+        // Hitung berapa banyak jumlah arena lapangan yang saat ini berstatus aktif
         $totalLapanganAktif = Lapangan::where('status_aktif', true)->count();
 
-        // 5. Mengambil 5 reservasi terbaru yang butuh tindakan verifikasi cepat oleh admin (Log Antrean Bukti)
+        // Mengambil 5 reservasi terbaru yang butuh tindakan verifikasi cepat oleh admin (Log Antrean Bukti)
         $bookingButuhTindakan = Reservasi::with(['user', 'lapangan'])
             ->where('status_reservasi', 'pending')
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
 
-        // 6. Mengambil seluruh agenda pertandingan tim yang dijadwalkan tanding hari ini (Real-Time Hari Ini)
+        // Mengambil seluruh agenda pertandingan tim yang dijadwalkan tanding hari ini (Real-Time Hari Ini)
         $jadwalHariIni = Reservasi::with(['user', 'lapangan'])
             ->where('tgl_reservasi', Carbon::today()->toDateString())
             ->where('status_reservasi', 'confirmed') // Hanya memunculkan yang sudah lunas disetujui
@@ -60,17 +60,18 @@ class DashboardController extends Controller
         ));
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                                  RESERVASI                                 */
+    /* -------------------------------------------------------------------------- */
+
     public function reservasiIndex(Request $request)
     {
-        // PERBAIKAN: Default memunculkan status 'pending', tapi sekarang mengizinkan parameter 'cancelled'
         $statusFilter = $request->get('status', 'pending');
 
-        // Pastikan status yang dicari berada di antara 3 pilihan legal ini
         if (!in_array($statusFilter, ['pending', 'confirmed', 'cancelled'])) {
             $statusFilter = 'pending';
         }
 
-        // Ambil data reservasi terbaru beserta data user dan lapangan terkait (Eager Loading)
         $reservasis = Reservasi::with(['user', 'lapangan'])
             ->where('status_reservasi', $statusFilter)
             ->orderBy('tgl_reservasi', 'desc')
@@ -79,8 +80,6 @@ class DashboardController extends Controller
 
         return view('admin.reservasi', compact('reservasis', 'statusFilter'));
     }
-
-
 
     public function updateStatusReservasi(Request $request, $id)
     {
@@ -98,20 +97,24 @@ class DashboardController extends Controller
         return redirect()->back()->with('success', 'Status reservasi berhasil diperbarui!');
     }
 
-    // 1. Menampilkan Semua Daftar Lapangan di Dashboard Admin
+    /* -------------------------------------------------------------------------- */
+    /*                                  LAPANGAN                                  */
+    /* -------------------------------------------------------------------------- */
+
+    // Menampilkan Semua Daftar Lapangan di Dashboard Admin
     public function lapanganIndex()
     {
         $lapangans = Lapangan::orderBy('nama_lapangan', 'asc')->get();
         return view('admin.lapangan.index', compact('lapangans'));
     }
 
-    // 2. Menampilkan Halaman Formulir Tambah Lapangan Baru
+    // Menampilkan Halaman Formulir Tambah Lapangan Baru
     public function lapanganCreate()
     {
         return view('admin.lapangan.create');
     }
 
-    // 3. Memproses Penyimpanan Data Lapangan Baru ke Database + Upload Foto
+    // Memproses Penyimpanan Data Lapangan Baru ke Database + Upload Foto
     public function lapanganStore(Request $request)
     {
         $validated = $request->validate([
@@ -151,14 +154,14 @@ class DashboardController extends Controller
         return redirect()->route('admin.lapangan.index')->with('success', 'Lapangan baru berhasil ditambahkan!');
     }
 
-    // 4. Menampilkan Halaman Formulir Edit Lapangan Berdasarkan ID
+    // Menampilkan Halaman Formulir Edit Lapangan Berdasarkan ID
     public function lapanganEdit($id)
     {
         $lapangan = Lapangan::findOrFail($id);
         return view('admin.lapangan.edit', compact('lapangan'));
     }
 
-    // 5. Memproses Pembaruan Perubahan Data Lapangan ke Database
+    // Memproses Pembaruan Perubahan Data Lapangan ke Database
     public function lapanganUpdate(Request $request, $id)
     {
         $lapangan = Lapangan::findOrFail($id);
@@ -174,7 +177,7 @@ class DashboardController extends Controller
             'gambar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
         ]);
 
-        $namaFileGambar = $lapangan->gambar; // Tetap gunakan nama gambar lama secara default
+        $namaFileGambar = $lapangan->gambar;
 
         // Jika admin mengunggah file foto baru
         if ($request->hasFile('gambar')) {
@@ -202,7 +205,7 @@ class DashboardController extends Controller
         return redirect()->route('admin.lapangan.index')->with('success', 'Data informasi lapangan berhasil diperbarui!');
     }
 
-    // 6. Fitur Sakelar Status Aktif / Nonaktif Lapangan Sementara
+    // Fitur Sakelar Status Aktif / Nonaktif Lapangan Sementara
     public function lapanganToggleStatus($id)
     {
         $lapangan = Lapangan::findOrFail($id);
@@ -214,7 +217,7 @@ class DashboardController extends Controller
         return redirect()->back()->with('success', 'Status operasional lapangan berhasil diubah!');
     }
 
-    // 7. Menghapus Lapangan Secara Permanen
+    // Menghapus Lapangan Secara Permanen
     public function lapanganDestroy($id)
     {
         $lapangan = Lapangan::findOrFail($id);
@@ -230,10 +233,10 @@ class DashboardController extends Controller
     }
 
     /* -------------------------------------------------------------------------- */
-    /*           PERBAIKAN TOTAL: MODUL KELOLA AKUN BERBASIS HIERARKI MULTI-ROLE  */
+    /* ---------------------------------- AKUN ---------------------------------- */
     /* -------------------------------------------------------------------------- */
 
-    // 1. Menampilkan Semua Daftar Akun yang Dipisah Berdasarkan Role Tabel
+    // Menampilkan Semua Daftar Akun yang Dipisah Berdasarkan Role Tabel
     public function akunIndex()
     {
         $saatIni = Auth::user();
@@ -245,7 +248,7 @@ class DashboardController extends Controller
         return view('admin.akun.index', compact('saatIni', 'daftarSuperAdmin', 'daftarAdmin', 'daftarPelanggan'));
     }
 
-    // 2. Menampilkan Halaman Formulir Pembuatan Pengurus Internal Baru
+    // Menampilkan Halaman Formulir Pembuatan Pengurus Internal Baru
     public function akunCreate()
     {
         $adminLogin = Auth::user();
@@ -258,7 +261,7 @@ class DashboardController extends Controller
         return view('admin.akun.create', compact('adminLogin'));
     }
 
-    // 3. Menyimpan Akun Baru ke Database
+    // Menyimpan Akun Baru ke Database
     public function akunStore(Request $request)
     {
         $adminLogin = Auth::user();
@@ -287,7 +290,7 @@ class DashboardController extends Controller
         return redirect()->route('admin.akun.index')->with('success', 'Akun pengurus baru berhasil didaftarkan ke sistem!');
     }
 
-    // 4. Menampilkan Halaman Formulir Edit Akun Pengurus
+    // Menampilkan Halaman Formulir Edit Akun Pengurus
     public function akunEdit($id)
     {
         $adminLogin = Auth::user();
@@ -306,7 +309,7 @@ class DashboardController extends Controller
         return view('admin.akun.edit', compact('user', 'adminLogin'));
     }
 
-    // 5. Memproses Pembaruan Data Perubahan Akun Pengurus
+    // Memproses Pembaruan Data Perubahan Akun Pengurus
     public function akunUpdate(Request $request, $id)
     {
         $adminLogin = Auth::user();
@@ -346,7 +349,7 @@ class DashboardController extends Controller
         return redirect()->route('admin.akun.index')->with('success', 'Data akun pengurus berhasil diperbarui!');
     }
 
-    // 6. Menghapus Akun dengan Proteksi Hak Akses Menyesuaikan Peran
+    // Menghapus Akun dengan Proteksi Hak Akses Menyesuaikan Peran
     public function akunDestroy($id)
     {
         $adminLogin = Auth::user();
@@ -384,7 +387,7 @@ class DashboardController extends Controller
     /*               MODUL LAPORAN KEUANGAN & PENCATATAN TRANSAKSI                */
     /* -------------------------------------------------------------------------- */
 
-    // 1. Menampilkan Halaman Riwayat Transaksi Finansial & Filter Omzet
+    // Menampilkan Halaman Riwayat Transaksi Finansial & Filter Omzet
     public function laporanIndex(Request $request)
     {
         $bulanDipilih = $request->get('bulan', date('m'));
@@ -404,7 +407,7 @@ class DashboardController extends Controller
         return view('admin.laporan.index', compact('transaksis', 'totalOmzet', 'bulanDipilih', 'tahunDipilih'));
     }
 
-    // 2. Mengeksekusi Unduhan Berkas PDF Rekap Keuangan Bulanan
+    // Mengeksekusi Unduhan Berkas PDF Rekap Keuangan Bulanan
     public function unduhLaporanPdf(Request $request)
     {
         $bulanDipilih = $request->get('bulan', date('m'));

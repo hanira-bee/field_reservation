@@ -76,7 +76,7 @@ class HomeController extends Controller
 
     public function submitReservasi(Request $request)
     {
-        // 1. Validasi input form
+        // Validasi input form
         $validated = $request->validate([
             'lapangan_id' => ['required', 'exists:lapangans,id'],
             'tanggal' => ['required', 'date', 'after_or_equal:today'],
@@ -87,14 +87,14 @@ class HomeController extends Controller
         $jamMulaiSesi = substr($validated['jam'], 0, 5);
         $isPaket2Jam = str_contains($validated['jam'], ' - ');
 
-        // 2. Proteksi anti-bentrok jam mulai langsung
+        // Proteksi anti-bentrok jam mulai langsung
         $bentrokMulai = Reservasi::where('lapangan_id', $validated['lapangan_id'])
             ->where('tgl_reservasi', $validated['tanggal'])
             ->where('slot_jam', $jamMulaiSesi)
             ->where('status_reservasi', '!=', 'cancelled')
             ->exists();
 
-        // 3. Proteksi anti-bentrok jam pertengahan paket
+        // Proteksi anti-bentrok jam pertengahan paket
         $jamCekTambahan = $isPaket2Jam
             ? Carbon::parse($jamMulaiSesi)->addHour()->format('H:i')
             : Carbon::parse($jamMulaiSesi)->subHour()->format('H:i');
@@ -114,7 +114,7 @@ class HomeController extends Controller
         $lapangan = Lapangan::findOrFail($validated['lapangan_id']);
         $totalBiaya = $isPaket2Jam ? ($lapangan->harga_per_jam * 2) : $lapangan->harga_per_jam;
 
-        // 4. GENERATOR KODE BOOKING UNIK OTOMATIS
+        // GENERATOR KODE BOOKING UNIK OTOMATIS
         // Format hasil: SM + TAHUNBULANTANGGAL + 4 ANGKA ACAK (Contoh: SM2607294821)
         $stringTanggal = Carbon::parse($validated['tanggal'])->format('ymd');
         do {
@@ -123,7 +123,7 @@ class HomeController extends Controller
             $kodeSudahAda = Reservasi::where('kode_booking', $kodeBookingBaru)->exists();
         } while ($kodeSudahAda);
 
-        // 5. Simpan record data reservasi ke database lengkap dengan kode_booking
+        // Simpan record data reservasi ke database lengkap dengan kode_booking
         Reservasi::create([
             'user_id' => Auth::id(),
             'lapangan_id' => $validated['lapangan_id'],
@@ -208,7 +208,7 @@ class HomeController extends Controller
     /*                     MODUL RIWAYAT RESERVASI PELANGGAN                      */
     /* -------------------------------------------------------------------------- */
 
-    // 1. Menampilkan Daftar Riwayat Reservasi Akun yang Sedang Login
+    // Menampilkan Daftar Riwayat Reservasi Akun yang Sedang Login
     public function riwayatIndex()
     {
         // Mengambil data reservasi khusus milik user yang sedang aktif login (Auth::id())
@@ -221,20 +221,18 @@ class HomeController extends Controller
         return view('pelanggan.riwayat', compact('reservasis'));
     }
 
-    // 2. Memproses Unggahan Berkas Foto Struk Bukti Transfer Pelanggan
+    // Memproses Unggahan Berkas Foto Struk Bukti Transfer Pelanggan
     public function uploadBuktiPembayaran(Request $request, $id)
     {
-        // 1. Pastikan nama input file di file Blade Anda adalah 'bukti_pembayaran'
         $request->validate([
             'bukti_pembayaran' => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048']
         ]);
 
-        // 2. Ambil data reservasi milik user aktif
+        // Ambil data reservasi milik user aktif
         $reservasi = Reservasi::where('id', $id)
             ->where('user_id', \Illuminate\Support\Facades\Auth::id())
             ->firstOrFail();
 
-        // 3. LOGIKA DEBUG: Cek apakah file fisik terdeteksi masuk ke sistem backend Laravel
         if ($request->hasFile('bukti_pembayaran')) {
             $file = $request->file('bukti_pembayaran');
 
@@ -255,7 +253,6 @@ class HomeController extends Controller
                 @unlink(public_path('images/bukti_transfer/' . $reservasi->bukti_pembayaran));
             }
 
-            // 4. KHUSUS: Menggunakan fungsi save() murni untuk memaksa MySQL memperbarui data
             $reservasi->bukti_pembayaran = $namaFileStruk;
             $reservasi->save(); // Mengunci rekaman data baru ke database
 
@@ -266,11 +263,11 @@ class HomeController extends Controller
         return redirect()->back()->with('error', 'Gagal memproses unggahan: File tidak terdeteksi oleh sistem backend.');
     }
 
-        /* -------------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------------- */
     /*                         MODUL EDIT PROFIL PELANGGAN                        */
     /* -------------------------------------------------------------------------- */
 
-    // 1. Menampilkan Halaman Formulir Ubah Profil Pelanggan
+    // Menampilkan Halaman Formulir Ubah Profil Pelanggan
     public function profilEdit()
     {
         // Mengambil data user yang sedang aktif login
@@ -278,7 +275,7 @@ class HomeController extends Controller
         return view('pelanggan.profil_edit', compact('user'));
     }
 
-    // 2. Memproses Pembaruan Data Profil & Password Pelanggan ke Database
+    // Memproses Pembaruan Data Profil & Password Pelanggan ke Database
     public function profilUpdate(Request $request)
     {
         $user = \Illuminate\Support\Facades\Auth::user();
@@ -311,7 +308,7 @@ class HomeController extends Controller
         return redirect()->back()->with('success', 'Profil akun Anda berhasil diperbarui!');
     }
 
-        // 3. Fitur Pembatalan Mandiri oleh Pelanggan Sebelum Diverifikasi Admin
+        // Fitur Pembatalan Mandiri oleh Pelanggan Sebelum Diverifikasi Admin
     public function batalMandiriPelanggan($id)
     {
         // Mencari data reservasi yang sesuai dengan ID dan harus milik user yang sedang login
@@ -325,15 +322,13 @@ class HomeController extends Controller
             return redirect()->back()->with('error', '⚠️ GAGAL: Jadwal tanding yang sudah disetujui Lunas oleh Admin tidak dapat dibatalkan secara mandiri!');
         }
 
-        // Hapus file fisik gambar struk di folder public jika sebelumnya mereka sempat iseng upload
         if ($reservasi->bukti_pembayaran && file_exists(public_path('images/bukti_transfer/' . $reservasi->bukti_pembayaran))) {
             @unlink(public_path('images/bukti_transfer/' . $reservasi->bukti_pembayaran));
         }
 
-        // PERBAIKAN LOGIKA: Mengubah status menjadi 'cancelled' agar terekam sejarahnya tapi kalender kembali hijau
         $reservasi->update([
             'status_reservasi' => 'cancelled',
-            'bukti_pembayaran' => null // Setel kembali menjadi null karena batal
+            'bukti_pembayaran' => null 
         ]);
 
         return redirect()->route('pelanggan.riwayat')->with('success', 'Reservasi Anda telah berhasil dibatalkan. Slot jam lapangan kini telah dibuka kembali.');

@@ -24,25 +24,25 @@
         <form method="POST" action="{{ route('reservasi.submit') }}" class="mt-8 grid gap-6 md:grid-cols-2">
             @csrf
 
-            <!-- 1. Nama Lengkap (Readonly/Disabled karena diambil dari database user) -->
+            <!-- Nama Lengkap (Readonly/Disabled karena diambil dari database user) -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Nama Lengkap</label>
                 <input type="text" value="{{ $defaultData['nama'] }}" disabled class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-500 cursor-not-allowed">
             </div>
 
-            <!-- 2. Email (Readonly) -->
+            <!-- Email (Readonly) -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" value="{{ $defaultData['email'] }}" disabled class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-500 cursor-not-allowed">
             </div>
 
-            <!-- 3. Nomor Telepon (Readonly) -->
+            <!-- Nomor Telepon (Readonly) -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Nomor Telepon</label>
                 <input type="text" value="{{ $defaultData['no_telepon'] }}" disabled class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-500 cursor-not-allowed">
             </div>
 
-            <!-- 4. Pilihan Lapangan Dinamis -->
+            <!-- Pilihan Lapangan Dinamis -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Lapangan</label>
                 <select name="lapangan_id" required class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2">
@@ -55,19 +55,19 @@
                 </select>
             </div>
 
-            <!-- 5. Tanggal Main -->
+            <!-- Tanggal Main -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Tanggal</label>
                 <input name="tanggal" type="date" value="{{ old('tanggal', $defaultData['tanggal']) }}" required class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2">
             </div>
 
-            <!-- 6. Sesi Jam (Readonly agar tidak bisa dimanipulasi teksnya) -->
+            <!-- Sesi Jam (Readonly agar tidak bisa dimanipulasi teksnya) -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Jam Sesi</label>
                 <input name="jam" type="text" value="{{ old('jam', $defaultData['jam']) }}" readonly required class="w-full rounded-lg border border-gray-300 bg-gray-200 px-4 py-2 font-mono font-bold text-red-600">
             </div>
 
-            <!-- 7. Catatan -->
+            <!-- Catatan -->
             <div>
                 <label class="mb-1 block text-sm font-medium text-gray-700">Catatan Tambahan (Opsional)</label>
                 <textarea name="catatan" rows="4" class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2" placeholder="Tambahkan catatan khusus Anda (misal: sewa raket, rompi, dll.)">{{ old('catatan') }}</textarea>
@@ -100,7 +100,7 @@
                 </p>
             </div>
 
-            <!-- 8. Submit Button & Kembali -->
+            <!-- Submit Button & Kembali -->
             <div class="flex flex-col sm:flex-row gap-4">
                 <!-- Tombol Kembali Dinamis Menuju Detail Lapangan yang Dipilih -->
                 <div class="w-full sm:w-auto">

@@ -32,4 +32,26 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // Admin Route
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // reservasi
+    Route::get('/reservasi', [DashboardController::class, 'reservasiIndex'])->name('reservasi.index');
+    Route::post('/reservasi/{id}/update-status', [DashboardController::class, 'updateStatusReservasi'])->name('reservasi.update');
+    // lapangan
+    Route::get('/lapangan', [DashboardController::class, 'lapanganIndex'])->name('lapangan.index');
+    Route::get('/lapangan/create', [DashboardController::class, 'lapanganCreate'])->name('lapangan.create');
+    Route::post('/lapangan/store', [DashboardController::class, 'lapanganStore'])->name('lapangan.store');
+    Route::get('/lapangan/{id}/edit', [DashboardController::class, 'lapanganEdit'])->name('lapangan.edit');
+    Route::post('/lapangan/{id}/update', [DashboardController::class, 'lapanganUpdate'])->name('lapangan.update');
+    Route::post('/lapangan/{id}/toggle-status', [DashboardController::class, 'lapanganToggleStatus'])->name('lapangan.toggle-status');
+    Route::delete('/lapangan/{id}/delete', [DashboardController::class, 'lapanganDestroy'])->name('lapangan.destroy');
+    // akun
+    Route::get('/akun', [DashboardController::class, 'akunIndex'])->name('akun.index');
+    Route::get('/akun/create', [DashboardController::class, 'akunCreate'])->name('akun.create');
+    Route::post('/akun/store', [DashboardController::class, 'akunStore'])->name('akun.store');
+    Route::get('/akun/{id}/edit', [DashboardController::class, 'akunEdit'])->name('akun.edit');
+    Route::post('/akun/{id}/update', [DashboardController::class, 'akunUpdate'])->name('akun.update');
+    Route::delete('/akun/{id}/delete', [DashboardController::class, 'akunDestroy'])->name('akun.destroy');
+    // laporan
+    Route::get('/laporan', [DashboardController::class, 'laporanIndex'])->name('laporan.index');
+    Route::get('/laporan/unduh-pdf', [DashboardController::class, 'unduhLaporanPdf'])->name('laporan.pdf');
 });

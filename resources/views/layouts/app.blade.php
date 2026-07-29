@@ -171,18 +171,21 @@
                                     <span class="material-icons text-lg transition-transform group-hover:scale-110">
                                         <h3 class="text-base">Telepon</h3>
                                     </span>
-                                    <p class="hover:underline">+62 812-3456-7890</p>
+                                    <p class="hover:underline">+62 891 2345 6789</p>
                                 </div>
                             </div>
 
                             <div class="flex items-center gap-3 pt-2">
-                                <a href="#" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
+                                <!-- facebook -->
+                                <a href="https://web.facebook.com/login/?locale=id_ID&_rdc=1&_rdr#" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
                                     <i class="fab fa-facebook-f text-sm"></i>
                                 </a>
-                                <a href="#" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
+                                <!-- twitter -->
+                                <a href="https://x.com/?lang=id" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
                                     <i class="fab fa-twitter text-sm"></i>
                                 </a>
-                                <a href="#" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
+                                <!-- instagram -->
+                                <a href="https://www.instagram.com/" class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white hover:text-red-600 hover:bg-white hover:border-white transform hover:scale-115 transition-all duration-150 ease-in-out">
                                     <i class="fab fa-instagram text-sm"></i>
                                 </a>
                             </div>

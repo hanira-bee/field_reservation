@@ -90,6 +90,35 @@ class HomeController extends Controller
         // 3. Deteksi Paket: Memeriksa apakah data jam mengandung karakter " - " (Paket 2 Jam)
         $isPaket2Jam = str_contains($validated['jam'], ' - ');
 
+        // 1. Cek bentrok jam mulai langsung
+        $bentrokMulai = Reservasi::where('lapangan_id', $validated['lapangan_id']) 
+            ->where('tgl_reservasi', $validated['tanggal']) 
+            ->where('slot_jam', $jamMulaiSesi) 
+            ->where('status_reservasi', '!=', 'cancelled') 
+            ->exists(); 
+
+        // 2. Cek bentrok jam pertengahan (Maju 1 jam atau mundur 1 jam tergantung jenis paket)
+        $jamCekTambahan = $isPaket2Jam 
+            ? Carbon::parse($jamMulaiSesi)->addHour()->format('H:i') 
+            : Carbon::parse($jamMulaiSesi)->subHour()->format('H:i');
+
+        $bentrokSesiSampingan = Reservasi::where('lapangan_id', $validated['lapangan_id']) 
+            ->where('tgl_reservasi', $validated['tanggal']) 
+            ->where('slot_jam', $jamCekTambahan) 
+            ->where('status_reservasi', '!=', 'cancelled') 
+            ->exists(); 
+
+        // Jika pengguna memesan sesi 1 jam, dia hanya bentrok jika jam tersebut berstatus paket 2 jam dari jam sebelumnya
+        if (!$isPaket2Jam && $bentrokSesiSampingan) {
+            // Pastikan database jam sebelumnya memang merupakan bagian dari transaksi paket (karena durasi sewa dihitung per jam)
+        }
+
+        if ($bentrokMulai || ($isPaket2Jam && $bentrokSesiSampingan)) { 
+            return redirect()->back() 
+                ->withInput() 
+                ->withErrors(['jam' => 'Jadwal terdeteksi bentrok dengan slot waktu paket lain yang sudah terisi.']); 
+        }
+
         // 4. Proteksi anti-bentrok menggunakan jam mulai sesi yang sudah bersih
         $bentrok = Reservasi::where('lapangan_id', $validated['lapangan_id'])
             ->where('tgl_reservasi', $validated['tanggal'])
@@ -129,31 +158,36 @@ class HomeController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $lapangan = Lapangan::findOrFail($id);
-        $tanggalDipilih = $request->get('tanggal', Carbon::today()->toDateString());
+        $lapangan = Lapangan::findOrFail($id); 
+        $tanggalDipilih = $request->get('tanggal', Carbon::today()->toDateString()); 
 
-        // Mengatur penanggalan navigasi rentang minggu (< > pada kalender)
         $date = Carbon::parse($tanggalDipilih);
         $statusHari = $date->isWeekend() ? 'Weekend' : 'Weekday';
         $prevWeekString = $date->copy()->subWeek()->toDateString();
         $nextWeekString = $date->copy()->addWeek()->toDateString();
-
-        // Tentukan hari awal (Minggu) dan akhir (Sabtu) dalam minggu tersebut
         $startOfWeek = $date->copy()->startOfWeek(Carbon::SUNDAY)->toDateString();
         $endOfWeek = $date->copy()->endOfWeek(Carbon::SATURDAY)->toDateString();
 
-        // PERBAIKAN UTAMA: Ambil seluruh data booking dalam rentang 1 minggu penuh
-        $reservasiMingguan = Reservasi::where('lapangan_id', $id)
-            ->whereBetween('tgl_reservasi', [$startOfWeek, $endOfWeek]) // Cari dari minggu sampai sabtu
+        // Ambil semua data reservasi mingguan lengkap dengan kolom total_biaya
+        $reservasiMingguan = Reservasi::where('lapangan_id', $id) 
+            ->whereBetween('tgl_reservasi', [$startOfWeek, $endOfWeek])
             ->where('status_reservasi', '!=', 'cancelled')
             ->get();
 
-        // Strukturkan data ke dalam matriks dua dimensi [tanggal][jam] agar mudah dibaca di Blade
+        // Strukturkan matriks booking menjadi array asosiatif multi-dimensi
         $matriksBooking = [];
         foreach ($reservasiMingguan as $res) {
             $tgl = $res->tgl_reservasi;
             $jam = Carbon::parse($res->slot_jam)->format('H:i');
-            $matriksBooking[$tgl][] = $jam; // Contoh hasil: $matriksBooking['2026-07-28'] = ['08:00', '10:00']
+            
+            // DETEKSI DURASI: Jika total_biaya lebih besar dari harga 1 jam, tandai sebagai paket 2 jam
+            // Kita bandingkan dengan $lapangan->harga_per_jam
+            $isDuaJam = (float)$res->total_biaya > (float)$lapangan->harga_per_jam;
+
+            $matriksBooking[$tgl][$jam] = [
+                'booked' => true,
+                'durasi_paket_2_jam' => $isDuaJam
+            ];
         }
 
         // Definisi master sesi 1 jam
@@ -164,16 +198,9 @@ class HomeController extends Controller
 
         // Kirim data matriksBooking ke Blade (menggantikan jamTerbookingRaw yang lama)
         return view('pelanggan.detail', compact(
-            'lapangan',
-            'tanggalDipilih',
-            'matriksBooking',
-            'sesi1Jam',
-            'sesi2Jam',
-            'statusHari',
-            'startOfWeek',
-            'prevWeekString',
-            'nextWeekString'
-        ));
+        'lapangan', 'tanggalDipilih', 'matriksBooking', 
+        'sesi1Jam', 'sesi2Jam', 'statusHari', 'startOfWeek', 'prevWeekString', 'nextWeekString'
+        )); 
     }
 
 

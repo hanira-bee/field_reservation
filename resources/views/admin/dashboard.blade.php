@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <section class="min-h-[70vh] bg-gray-50 px-6 py-6">

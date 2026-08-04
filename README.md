@@ -1,63 +1,77 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+[![GitHub stars](https://img.shields.io/github/stars/hanira-bee/field_reservation.svg?style=social)](https://github.com/hanira-bee/field_reservation/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/hanira-bee/field_reservation.svg)](https://github.com/hanira-bee/field_reservation/network)
+[![license](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://chosealicense.com/lisences/mit/)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 🏟 Field Reservation System (Laravel 13)
 
-## About Laravel
+A **sports field reservatio system** built with **Laravel 13** and **MySql**, designed for learning and portfolio purposes. 
+⚠ **Note:** This project is for portfolio/demo only, not intended for production use.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📄 Requirements
+- PHP >= 8.5
+- Node.js & NPM
+- MySQL
+- Laravel 13.21
+- Composer
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📑 Features 
+### 🔖 **User Side**
+- 🏠 View the Homapage
+- ⚽ Check the list of available fields
+- 📆 View the sport field schedule
+- 🔐 Login and register
+- 💳 Make a reservation and view history
+- 👤 Customise Profile
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🔖 **Admin Dashboard**
+- 📊 View booking and user statistics  
+- 🔔 View booking updates 
+- 🎛️ Manage fields & reservations  
+- 👥 Manage account & reports
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+## 🛠 Installation Guide
+### **Step 1: Clone the Repository**
+```sh
+git clone https://github.com/hanira-bee/field_reservation.git
+cd field_reservation
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### **Step 2: Install Dependencies**
+``` sh 
+composer install
+npm install
+```
 
-## Contributing
+### **Step 3: Environment Setup**
+```sh
+cp .env.example .env
+php artisan key:generate
+```
+Update .env with your database credentials
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### **Step 4: Run Migrations & Seeders**
+``` sh
+php artisan migrate --seed
+```
 
-## Code of Conduct
+### **Step 5: Link Storage**
+``` sh
+php artisan storage:link
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### **Step 6: Run the Application**
+``` sh
+php artisan serve
+```
+Open http://localhost:8000
 
-## Security Vulnerabilities
+## 📜 License
+This project is licensed under the MIT Licensed © 2026 Hanira-Bee
+Feel free to use & modify for learning purposes.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🐝 Author
+- **Hanira-Bee** (https://github.com/hanira-bee)
+- **Email** rinnieera@gmail.com 
+- **Linkedin** https://www.linkedin.com/in/putri-ramadhani-b208b4385/
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# field_reservation
-PHP with Laravel framework | sports field reservations 
->>>>>>> 88ec05327ad4eb42f515c8c1f2d31226cc9f8dd7
+✨don't forget to star the repo if you find this project helpful!✨

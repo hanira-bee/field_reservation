@@ -79,7 +79,7 @@
                     <span class="material-icons text-base">payments</span> Informasi Rekening Pembayaran
                 </h3>
                 <p class="text-xs text-gray-500 leading-relaxed">
-                    Silakan lakukan transfer pembayaran lunas sesuai total biaya di atas dalam waktu 1x24 jam ke salah satu rekening resmi SM Sport Center berikut:
+                    Silakan lakukan transfer pembayaran lunas sesuai total biaya di atas ke salah satu rekening resmi SM Sport Center berikut:
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs font-medium text-gray-700">
                     <!-- Rekening 1 -->

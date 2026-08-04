@@ -37,12 +37,45 @@ class UserSeeder extends Seeder
         );
 
         User::updateOrCreate(
+            ['email' => 'admin2@gmail.com'], 
+            [
+                'name' => 'Siska adm',
+                'password' => Hash::make('admin123'),
+                'no_telepon' => '081234567890',
+                'tgl_daftar' => Carbon::parse('2026-06-30'),
+                'role' => 'admin',
+            ]
+        );
+
+        User::updateOrCreate(
             ['email' => 'dimas@gmail.com'], 
             [
                 'name' => 'Dimas',
                 'no_telepon' => '081234567890',
                 'password' => Hash::make('dimas123'),
                 'tgl_daftar' => Carbon::parse('2026-06-04'),
+                'role' => 'pelanggan',
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'angga@gmail.com'], 
+            [
+                'name' => 'Angga',
+                'no_telepon' => '081234567890',
+                'password' => Hash::make('angga123'),
+                'tgl_daftar' => Carbon::parse('2026-06-05'),
+                'role' => 'pelanggan',
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'dean@gmail.com'], 
+            [
+                'name' => 'Dean',
+                'no_telepon' => '081234567890',
+                'password' => Hash::make('dean123'),
+                'tgl_daftar' => Carbon::parse('2026-07-04'),
                 'role' => 'pelanggan',
             ]
         );

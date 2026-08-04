@@ -113,8 +113,7 @@
                     Anda belum memiliki riwayat reservasi lapangan olahraga saat ini.
                 </div>
                 @endforelse
-
-
+                
                 @if($reservasis->isEmpty())
                 <div class="rounded-3xl border border-dashed border-gray-200 bg-white p-12 text-center text-gray-400 font-medium shadow-2xs">
                     <span class="material-icons text-5xl text-gray-200 block mb-2">airplane_ticket</span>

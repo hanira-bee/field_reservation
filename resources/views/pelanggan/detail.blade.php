@@ -21,7 +21,7 @@
             <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900 uppercase tracking-tight">
                 {{ $lapangan->nama_lapangan }}
             </h2>
-            <p class="text-xs text-gray-400 flex items-center gap-1 mt-1">
+            <p class="text-xs text-gray-700 flex items-center gap-1 mt-1">
                 <span class="material-icons text-sm">place</span> {{ $lapangan->lokasi }}
             </p>
         </div>

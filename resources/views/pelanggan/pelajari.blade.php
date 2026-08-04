@@ -113,7 +113,7 @@
                 <!-- Daftar Ceklis Fitur Keunggulan -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm font-bold text-gray-700">
                     <div class="flex items-center gap-2">
-                        <span class="material-icons text-red-600 text-base">check_circle</span> Konfirmasi Pembayaran Instan
+                        <span class="material-icons text-red-600 text-base">check_circle</span> Konfirmasi Pembayaran 
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="material-icons text-red-600 text-base">check_circle</span> Sistem Pembatalan Fleksibel

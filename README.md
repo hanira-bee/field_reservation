@@ -1,10 +1,11 @@
 [![GitHub stars](https://img.shields.io/github/stars/hanira-bee/field_reservation.svg?style=social)](https://github.com/hanira-bee/field_reservation/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/hanira-bee/field_reservation.svg)](https://github.com/hanira-bee/field_reservation/network)
-[![license](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://chosealicense.com/lisences/mit/)
+[![license](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://choosealicense.com/licenses/mit/)
 
 # 🏟 Field Reservation System (Laravel 13)
 
-A **sports field reservatio system** built with **Laravel 13** and **MySql**, designed for learning and portfolio purposes. 
+A **sports field reservatio system** built with **Laravel 13** and **MySql**, designed for learning and portfolio purposes.
+
 ⚠ **Note:** This project is for portfolio/demo only, not intended for production use.
 
 ## 📄 Requirements
@@ -70,7 +71,7 @@ This project is licensed under the MIT Licensed © 2026 Hanira-Bee
 Feel free to use & modify for learning purposes.
 
 ## 🐝 Author
-- **Hanira-Bee** (https://github.com/hanira-bee)
+- **Hanira-Bee** https://github.com/hanira-bee
 - **Email** rinnieera@gmail.com 
 - **Linkedin** https://www.linkedin.com/in/putri-ramadhani-b208b4385/
 

@@ -54,7 +54,7 @@
                     <!-- Menu 4: Kelola Akun -->
                     <a href="{{ route('admin.akun.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.akun*') ? $activeClass : $normalClass }}"> 
                         <span class="material-icons text-xl">manage_accounts</span>
-                        <span>Kelola Akun Staf</span> 
+                        <span>Kelola Akun</span> 
                     </a> 
                     <!-- Menu 5: Laporan Laba -->
                     <a href="{{ route('admin.laporan.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.laporan*') ? $activeClass : $normalClass }}"> 

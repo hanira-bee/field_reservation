@@ -4,7 +4,7 @@
 
 # 🏟 Field Reservation System (Laravel 13)
 
-A **sports field reservatio system** built with **Laravel 13** and **MySql**, designed for learning and portfolio purposes.
+A **sports field reservation system** built with **Laravel 13** and **MySql**, designed for learning and portfolio purposes.
 
 ⚠ **Note:** This project is for portfolio/demo only, not intended for production use.
 
@@ -17,7 +17,7 @@ A **sports field reservatio system** built with **Laravel 13** and **MySql**, de
 
 ## 📑 Features 
 ### 🔖 **User Side**
-- 🏠 View the Homapage
+- 🏠 View the Homepage
 - ⚽ Check the list of available fields
 - 📆 View the sport field schedule
 - 🔐 Login and register

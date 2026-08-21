@@ -198,6 +198,10 @@ class HomeController extends Controller
         ));
     }
 
+    public function tentang()
+    {
+        return view('pelanggan.tentang');
+    }
 
     public function pelajari()
     {
@@ -220,6 +224,8 @@ class HomeController extends Controller
 
         return view('pelanggan.riwayat', compact('reservasis'));
     }
+
+
 
     // Memproses Unggahan Berkas Foto Struk Bukti Transfer Pelanggan
     public function uploadBuktiPembayaran(Request $request, $id)
@@ -308,7 +314,7 @@ class HomeController extends Controller
         return redirect()->back()->with('success', 'Profil akun Anda berhasil diperbarui!');
     }
 
-        // Fitur Pembatalan Mandiri oleh Pelanggan Sebelum Diverifikasi Admin
+    // Fitur Pembatalan Mandiri oleh Pelanggan Sebelum Diverifikasi Admin
     public function batalMandiriPelanggan($id)
     {
         // Mencari data reservasi yang sesuai dengan ID dan harus milik user yang sedang login
@@ -328,10 +334,9 @@ class HomeController extends Controller
 
         $reservasi->update([
             'status_reservasi' => 'cancelled',
-            'bukti_pembayaran' => null 
+            'bukti_pembayaran' => null
         ]);
 
         return redirect()->route('pelanggan.riwayat')->with('success', 'Reservasi Anda telah berhasil dibatalkan. Slot jam lapangan kini telah dibuka kembali.');
     }
-
 }

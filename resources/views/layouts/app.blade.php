@@ -13,8 +13,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Stack+Sans+Notch:wght@200..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://tailwindcss.com"></script>
+
+    <style>
+        /* Animasi bergerak maju mundur untuk panah kanan */
+        @keyframes pingpongRight {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(6px);
+            }
+
+            /* Jarak lompatan panah ke kanan */
+        }
+
+        /* Animasi bergerak maju mundur untuk panah kiri */
+        @keyframes pingpongLeft {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(-6px);
+            }
+
+            /* Jarak lompatan panah ke kiri */
+        }
+    </style>
 
     @vite('resources/css/app.css')
+
+    @stack('head')
 </head>
 
 <body class="bg-white min-h-screen">
@@ -52,7 +87,7 @@
                     </span>
                 </a>
 
-                <a href="{{ route('pelajari') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('pelajari') ? $activeClass : $normalClass }}">
+                <a href="{{ route('tentang') }}" class="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition {{ request()->routeIs('tentang') ? $activeClass : $normalClass }}">
                     <i class="fas fa-table-cells text-sm sm:text-base w-5 sm:w-6 text-center"></i>
                     <span class="text-sm sm:text-base">
                         <h2>Tentang Kami</h2>
@@ -84,7 +119,7 @@
                     <a href="{{ route('home') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('home') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Beranda</a>
                     <a href="{{ route('lapangan') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('lapangan') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Lapangan</a>
                     <a href="{{ route('kontak') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('kontak') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Kontak Kami</a>
-                    <a href="{{ route('pelajari') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('pelajari') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Tentang Kami</a>
+                    <a href="{{ route('tentang') }}" class="text-xs sm:text-sm md:text-base px-3 py-2 rounded-xl transition-all duration-200 {{ request()->routeIs('tentang') ? 'text-red-600 font-bold bg-red-50' : 'text-gray-600 hover:text-red-600 hover:bg-gray-50' }}">Tentang Kami</a>
                 </nav>
 
                 <!-- /* ----------------------------- USER PROFILE / AUTH BUTTONS ----------------------------- */ -->
@@ -174,11 +209,18 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col space-y-4">
+                        <div class="flex flex-col space-y-4 group">
                             <h2 class="text-xl font-bold tracking-wide">Tentang Kami</h2>
                             <p class="text-red-100 text-sm leading-relaxed antialiased">
                                 SM Sport Center adalah platform reservasi lapangan olahraga premium terbaik untuk bulu tangkis dan futsal, baik arena indoor maupun outdoor. Pesan slot jadwal Anda secara online dengan mudah, cepat, dan aman sebelum kehabisan.
                             </p>
+                            <a href="{{ route('pelajari') }}" class="btn text-xs px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow hover:bg-gray-200 ">
+                                <div class="flex justify-between">
+                                    <p>Pelajari cara reservasi</p>
+                                    <i class="fa-solid fa-arrow-right-long transition-transform duration-300 group-hover:animate-[pingpongRight_0.8s_infinite]"></i>
+                                </div>
+
+                            </a>
                         </div>
 
                         <div class="flex flex-col space-y-4">

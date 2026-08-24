@@ -248,11 +248,11 @@
                 </li>
                 <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
                     <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">2</span>
-                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Gunakan pakaian olahraga yang sesuai, dopan, dan aman untuk mencegah cedera.</p>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Gunakan pakaian olahraga yang sesuai, sopan, dan aman untuk mencegah cedera.</p>
                 </li>
                 <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
                     <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">3</span>
-                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Jaga ketenangan, hindari berisik yang dapat menganggu pengguna lain.</p>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Jaga ketenangan, hindari berisik yang dapat mengganggu pengguna lain.</p>
                 </li>
                 <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
                     <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">4</span>

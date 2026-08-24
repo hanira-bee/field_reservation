@@ -59,6 +59,7 @@
                         <div class="text-xs text-gray-500 space-y-1 font-medium">
                             <p class="flex items-center gap-1"><span class="material-icons text-sm text-gray-400">calendar_today</span> {{ \Carbon\Carbon::parse($res->tgl_reservasi)->format('d M Y') }}</p>
                             <p class="flex items-center gap-1"><span class="material-icons text-sm text-gray-400">schedule</span> {{ $jamMulai }} - {{ $jamSelesai }} WIB ({{ $isPaket2Jam ? 'Paket 2 Jam' : 'Sesi 1 Jam' }})</p>
+                            <p class="flex items-center gap-1"><span class="material-icons text-sm text-gray-400">place</span> {{ $res->lapangan->lokasi ?? 'lokasi tidak ditemukan' }} </p>
                         </div>
                     </div>
 

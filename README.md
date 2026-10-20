@@ -66,8 +66,11 @@ php artisan serve
 ```
 Open http://localhost:8000
 
+## ▶ Demo Video
+[![Demo Video](https://img.youtube.com/vi/Yu2yqdc8LNU/0.jpg)](https://youtu.be/Yu2yqdc8LNU)
+
 ## 📜 License
-This project is licensed under the MIT Licensed © 2026 Hanira-Bee
+This project is licensed under the MIT Licensed © 2026 Hanira-Bee & iampoetry
 Feel free to use & modify for learning purposes.
 
 ## 🐝 Author

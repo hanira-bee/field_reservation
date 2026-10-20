@@ -34,6 +34,11 @@
                         {{ $lapangan->deskripsi }}
                     </p>
 
+                    <!-- lokasi lapangan -->
+                    <p class="text-xs text-gray-600 mb-2 text-justify group-hover:text-red-600">
+                        <strong>Lokasi: </strong>{{ $lapangan->lokasi }}
+                    </p>
+
                     <!-- Info Harga & Jenis Olahraga -->
                     <div class="flex justify-between items-center mt-auto pt-4 border-t border-gray-50">
                         <p class="text-sm font-semibold text-emerald-600">

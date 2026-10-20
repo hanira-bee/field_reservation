@@ -1,262 +1,307 @@
 @extends('layouts.app')
-@section('title', 'Tentang Kami')
+@section('title', 'Pelajari')
+
+@push('head')
+<style>
+    @media (min-width: 1024px) {
+        .step-grid-item::after {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #1c304a;
+            z-index: 0;
+        }
+
+        .step-grid-item:nth-child(5)::after,
+        .step-grid-item:nth-child(9)::after {
+            /* width: 100%; */
+            display: none;
+        }
+
+        .step-grid-item:last-child::after {
+            display: none;
+        }
+    }
+</style>
+@endpush
 
 @section('content')
-<section class="relative bg-red-700 text-white py-24 px-6 sm:px-12 overflow-hidden">
-    <!-- Dekorasi Latar Belakang Geometris Ringan -->
-    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1.5px)] [background-size:16px_16px]"></div>
-
+<!-- navigasi -->
+<section class="relative py-4 px-5 sm:px-12 overflow-hidden">
     <div class="max-w-7xl mx-auto relative z-10 text-center sm:text-left">
-        <!-- Judul Utama -->
-        <h1 class="font-prompt text-3xl sm:text-5xl font-black uppercase tracking-tight mb-3">
-            Tentang Kami
-        </h1>
-        <!-- Breadcrumb Navigasi -->
-        <div class="font-roboto flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-sm text-red-100 font-medium">
-            <a href="{{ route('home') }}" class="hover:underline hover:text-white transition">Beranda</a>
-            <i class="fa-solid fa-angle-right text-white text-[10px]"></i>
-            <span class="text-white font-bold">Tentang Kami</span>
+        <!-- breadcrumb navigasi -->
+        <div class="font-roboto flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-sm text-red-180 font-medium">
+            <a href="{{ route('home') }}" class="text-red-700 hover:underline hover:text-red-900 transition">Beranda</a>
+            <i class="fa solid fa-angle-right text-red-700 text-[10px]"></i>
+            <span class="text-red-700 font-bold">Petunjuk Penggunaan</span>
         </div>
     </div>
 </section>
 
-<!-- CONTAINER UTAMA UNTUK KONTEN DI BAWAH BANNER -->
-<div class="bg-white min-h-screen py-16 px-4 sm:px-6">
-    <div class="max-w-7xl mx-auto space-y-24">
-        <!-- SEKTOR TWO-COLUMN: VISI MISI & DATA DUMMY FOTO -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<!-- panduan cara reservasi -->
+<section class="min-h-screen py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col justify-center">
+    <!-- Judul Header Utama -->
+    <div class="text-center mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-red-600 bg-red-50 px-3 py-1.5 rounded-full">Petunjuk Penggunaan</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">Cara Melakukan Reservasi</h2>
+        <p class="text-slate-500 mt-2 text-base sm:text-lg max-w-2xl mx-auto">Sentuh atau arahkan kursor pada judul langkah untuk melihat detail instruksi lengkap.</p>
+    </div>
 
-            <!-- Kolom Teks Kiri -->
-            <div class="space-y-6">
-                <span class="text-xs font-bold text-red-600 uppercase tracking-widest block">Providing Premium Arena</span>
-                <h2 class="font-prompt text-2xl sm:text-4xl font-black text-gray-900 leading-tight">
-                    Menyediakan Fasilitas Ragam Olahraga Terlengkap
+    <!-- Container Grid Utama (Sistem Grid Responsif) -->
+    <div class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-8 lg:gap-y-16 pl-8 sm:pl-0">
+
+        <!-- Garis Alur Vertikal khusus Tampilan HP di Samping Kiri -->
+        <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-slate-200 sm:hidden z-0"></div>
+
+        <!-- Langkah 1 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                01
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Registrasi/Login Akun</h3>
+                <!-- Box Kecil Hover (Tooltip Deskripsi) -->
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Pastikan Anda sudah memiliki akun dan melakukan login sebelum memulai proses reservasi.
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 2 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                02
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Buka Menu “Lapangan”</h3>
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Pilih lapangan mana yang ingin digunakan, pastikan lokasi dan jenis lapangan sesuai dengan keinginan anda.
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 3 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                03
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Pilih Durasi Sesi</h3>
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Tentukan lama sesi anda bertanding (1 jam/2 jam).
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 4 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                04
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Cek Ketersediaan Jadwal</h3>
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Pastikan tanggal dan jam yang dipilih masih tersedia pada kalender pada detail lapangan (ditandai dengan warna hijau).
+                </div>
+            </div>
+        </div>
+        <!-- Langkah 5 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                05
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Pilih Jam Reservasi</h3>
+                <!-- Box Kecil Hover (Tooltip Deskripsi) -->
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Klik pada waktu yang sesuai.
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 6 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                06
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Lakukan Pembayaran</h3>
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Transfer biaya sewa ke rekening bank yang tertera.
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 7 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                07
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Konfirmasi Reservasi</h3>
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Lengkapi permohonan reservasi melalui sistem.
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 8 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                08
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Unggah Bukti Pembayaran</h3>
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Upload struk pembayaran dengan gambar yang jelas.
+                </div>
+            </div>
+        </div>
+        <!-- Langkah 9 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                09
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Verifikasi oleh Admin</h3>
+                <!-- Box Kecil Hover (Tooltip Deskripsi) -->
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Admin akan memeriksa keaslian transaksi untuk mencegah penipuan.
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 10 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-white text-red-600 shadow-md border border-slate-100 font-extrabold text-xl group-hover:bg-red-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-red-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                10
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-red-600 transition-colors">Tunggu Status Reservasi</h3>
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                    Status akan berubah dari “Sesi Batal” menjadi “Siap Tanding” setelah pembayaran diverifikasi.
+                </div>
+            </div>
+        </div>
+
+        <!-- Langkah 11 -->
+        <div class="step-grid-item relative flex flex-col items-start sm:items-center group">
+            <div class="absolute -left-8 top-4 w-4 h-0.5 bg-slate-200 sm:hidden"></div>
+            <!-- Menggunakan warna aksen hijau khusus untuk menandakan langkah sukses/akhir -->
+            <div class="w-16 h-16 flex items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 shadow-md border border-emerald-100 font-extrabold text-xl group-hover:bg-emerald-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-emerald-200 group-hover:-translate-y-1 transition-all duration-300 z-10">
+                11
+            </div>
+            <div class="relative mt-4 w-full sm:text-center">
+                <h3 class="font-bold text-slate-900 text-lg cursor-pointer group-hover:text-emerald-600 transition-colors">Lapangan Siap Digunakan</h3>
+                <div class="opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-full mt-2 w-64 bg-emerald-900 text-white text-xs rounded-xl p-3 shadow-xl z-30 group-hover:z-50">
+                    <div class="absolute -top-1 sm:left-1/2 left-4 sm:-translate-x-1/2 w-2 h-2 bg-emerald-900 rotate-45"></div>
+                    Jika status sudah “Siap Tanding”, lapangan dapat digunakan sesuai jadwal yang dipilih.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-slate-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8 flex items-center">
+    <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-5 bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+        <!-- kolom kiri -->
+        <div class="lg:col-span-3 p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
+            <!-- title -->
+            <div class="mb-8">
+                <span class="text-xs font-bold uppercase tracking-widest text-red-600 px-3 py-1.5 rounded-full"><i class="fa-solid fa-circle-dot"></i> Aturan Sport Center</span>
+                <h3 class="text-sm sm:text-base font-medium text-slate-500 mt-3 justify-self-center">
+                    Hal yang perlu diperhatikan
+                </h3>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1 justify-self-center">
+                    Saat Bertanding
                 </h2>
-                <p class="font-roboto text-gray-600 text-sm sm:text-base leading-relaxed text-justify">
-                    SM Sport Center berkomitmen penuh untuk menghadirkan pengalaman berolahraga terbaik di arena premium berstandar turnamen nasional. Kami percaya bahwa kebugaran tubuh dan kebahagiaan komunitas berawal dari fasilitas lapangan yang aman, nyaman, dan mudah diakses oleh siapa saja.
-                </p>
-                <p class="font-roboto text-gray-500 text-sm leading-relaxed text-justify">
-                    Dengan sistem pemesanan online, Anda tidak perlu lagi khawatir akan bentrok jadwal atau kehabisan slot sesi bermain bersama tim kebanggaan Anda.
-                </p>
-
-                <div class="pt-2">
-                    <a href="{{ route('lapangan') }}" class="font-rubik group inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl text-sm tracking-wide shadow transition transform hover:scale-102">
-                        <span>Pesan Lapangan</span>
-                        <span class="transform group-hover:translate-x-1 transition-transform">&rarr;</span>
-                    </a>
-                </div>
             </div>
 
-            <!-- Kolom Foto Kanan Bertumpuk (Efek Kreatif seperti Gambar) -->
-            <div class="relative px-4">
-                <!-- Bingkai Foto Utama -->
-                <div class="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
-                    <img src="{{ asset('images/futsal_indoor.jpg') }}" alt="Main Arena" class="w-full h-full object-cover">
-                </div>
-                <!-- Kotak Badge Mengambang "20+" Versi Sport Center -->
-                <div class="absolute -bottom-6 left-10 bg-white border border-gray-100 rounded-2xl shadow-xl p-4 sm:p-5 flex flex-col justify-center items-center text-center max-w-[150px] border-t-4 border-t-red-600">
-                    <span class="font-prompt text-2xl sm:text-3xl font-black text-red-600 leading-none">5+</span>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mt-1">Pilihan Lapangan Premium</span>
-                </div>
-                <!-- Mini Gambar Pendukung -->
-                <div class="absolute -right-4 -bottom-10 w-1/2 aspect-video rounded-xl overflow-hidden shadow-lg border-4 border-white hidden sm:block">
-                    <img src="{{ asset('images/badminton_indoor.jpg') }}" alt="Sub Arena" class="w-full h-full object-cover">
-                </div>
-            </div>
-
-        </div>
-
-        <!-- GRID 3 KEUNGGULAN (FITUR KOMPETENSI) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
-            <!-- Poin 1 -->
-            <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100/60 hover:shadow-md transition">
-                <span class="material-icons text-red-600 text-3xl mb-3">workspace_premium</span>
-                <h4 class="font-prompt text-base font-bold text-gray-900 mb-2">Standar Turnamen Resmi</h4>
-                <p class="font-roboto text-gray-500 text-xs sm:text-sm leading-relaxed">
-                    Setiap jaring, lantai interlock, hingga karpet vinyl bulu tangkis dirawat berkala demi performa pergerakan maksimal.
-                </p>
-            </div>
-            <!-- Poin 2 -->
-            <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100/60 hover:shadow-md transition">
-                <span class="material-icons text-red-600 text-3xl mb-3">schedule</span>
-                <h4 class="font-prompt text-base font-bold text-gray-900 mb-2">Akurasi Jadwal Real-Time</h4>
-                <p class="font-roboto text-gray-500 text-xs sm:text-sm leading-relaxed">
-                    Sistem kalender terintegrasi yang memastikan tidak ada jadwal bentrok atau manipulasi waktu antar penyewa.
-                </p>
-            </div>
-            <!-- Poin 3 -->
-            <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100/60 hover:shadow-md transition">
-                <span class="material-icons text-red-600 text-3xl mb-3">sentiment_very_satisfied</span>
-                <h4 class="font-prompt text-base font-bold text-gray-900 mb-2">Kemudahan & Kenyamanan</h4>
-                <p class="font-roboto text-gray-500 text-xs sm:text-sm leading-relaxed">
-                    Fasilitas ruang ganti bersih, toilet steril, pencahayaan lateral anti-silau, dan area parkir kendaraan yang aman.
-                </p>
+            <!-- daftar aturan -->
+            <div class="space-y-4">
+                <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
+                    <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">1</span>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Datang tepat waktu, minimal 10 menit sebelum sesi dimulai.</p>
+                </li>
+                <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
+                    <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">2</span>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Gunakan pakaian olahraga yang sesuai, sopan, dan aman untuk mencegah cedera.</p>
+                </li>
+                <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
+                    <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">3</span>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Jaga ketenangan, hindari berisik yang dapat mengganggu pengguna lain.</p>
+                </li>
+                <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
+                    <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">4</span>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Bersikap sportif, tidak membuat keributan, dan menjaga keselamatan bersama.</p>
+                </li>
+                <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
+                    <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">5</span>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Gunakan lapangan yang sesuai pada struk pemesanan.</p>
+                </li>
+                <li class="flex items-start gap-4 p-3.5 border-b-2 border-red-300">
+                    <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center text-sm">6</span>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed pt-0.5">Simpan barang pribadi dengan rapi di loker yang tersedia, kunci dengan aman, dan bawa kunci bersama Anda.</p>
+                </li>
             </div>
         </div>
-        <!-- BANNER KOMPETENSI SEKTOR TENGAH (Background Abu-abu Lembut) -->
-        <div class="bg-gray-50 rounded-3xl p-6 sm:p-10 border border-gray-100 shadow-xs grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
 
-            <!-- Ilustrasi Foto Kiri (Memakan 2 Kolom) -->
-            <div class="lg:col-span-2 rounded-2xl overflow-hidden aspect-video lg:aspect-square shadow-sm">
-                <img src="{{ asset('images/futsal_outdoor.jpg') }}" alt="Our Arena Quality" class="w-full h-full object-cover">
-            </div>
+        <!-- kolom kanan -->
+        <div class="lg:col-span-2 bg-gradient-to-br from-red-600 to-red-800 p-8 sm:p-10 lg:p-12 flex flex-col justify-center h-full relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blue-2xl pointer-events-none"></div>
+            <div class="absolute -left-10 -top-10 w-40 h-40 bg-black/10 rounded-full blur-2xl pointer-events-none"></div>
 
-            <!-- Detail List Kelebihan Kanan (Memakan 3 Kolom) -->
-            <div class="lg:col-span-3 space-y-4">
-                <h3 class="font-prompt text-2xl font-black text-gray-900 uppercase tracking-tight">
-                    Komitmen Layanan Operasional Kami
-                </h3>
-                <p class="font-roboto text-gray-600 text-sm leading-relaxed">
-                    Kami selalu memastikan manajemen internal berjalan dengan profesional demi memberikan transparansi dan keamanan tinggi dalam setiap transaksi sewa lapangan olahraga Anda.
-                </p>
-
-                <!-- Daftar Ceklis Fitur Keunggulan -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm font-bold text-gray-700">
-                    <div class="flex items-center gap-2">
-                        <span class="material-icons text-red-600 text-base">check_circle</span> Konfirmasi Pembayaran 
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="material-icons text-red-600 text-base">check_circle</span> Sistem Pembatalan Fleksibel
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="material-icons text-red-600 text-base">check_circle</span> Pengawasan Kebersihan Berkala
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="material-icons text-red-600 text-base">check_circle</span> Customer Support Responsif
-                    </div>
+            <!-- title -->
+            <div class="mb-8 relative z-10">
+                <div class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center text-white text-xl mb-4 shadow-inner">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
                 </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                    Pengingat Penting
+                </h2>
+                <div class="w-16 h-1 bg-white/30 mt-3 rounded-full"></div>
             </div>
 
+            <!-- daftar aturan -->
+            <ul class="space-y-5 relative z-10">
+                <li class="flex items-start gap-4 p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-sm">
+                    <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-white text-red-700 font-bold flex items-center justify-center text-xs shadow">1</span>
+                    <p class="text-red-50 text-sm sm:text-base leadinig-relaxed">Pengguna yang datang terlambat <strong class="text-white font-semibold">tidak berhak</strong> meminta tambahan waktu.</p>
+                </li>
+                <li class="flex items-start gap-4 p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-sm">
+                    <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-white text-red-700 font-bold flex items-center justify-center text-xs shadow">2</span>
+                    <p class="text-red-50 text-sm sm:text-base leadinig-relaxed">Pelanggaran aturan akan berakibat <strong class="text-white font-semibold">dikeluarkan dari lapangan</strong> dan tidak diizinkan masuk pada hari tersebut.</p>
+                </li>
+                <li class="flex items-start gap-4 p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-sm">
+                    <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-white text-red-700 font-bold flex items-center justify-center text-xs shadow">3</span>
+                    <p class="text-red-50 text-sm sm:text-base leadinig-relaxed">Kehilangan barang pribadi menjadi <strong class="text-white font-semibold">tanggung jawab masing-masing pengguna</strong> bukan pihak Sport Center.</p>
+                </li>
+            </ul>
         </div>
-
-        <!-- GRID DAFTAR TIM STAF MANAJEMEN / MANAGEMENT TEAM -->
-        <div class="space-y-10 pt-4">
-            <!-- Judul Sektor Tim -->
-            <div class="text-center max-w-xl mx-auto space-y-2">
-                <h3 class="font-prompt text-2xl sm:text-3xl font-black text-gray-900 uppercase tracking-tight">
-                    Our Management Team
-                </h3>
-                <p class="font-roboto text-xs sm:text-sm text-gray-400">
-                    Staf pengurus profesional SM Sport Center yang siap melayani dan menjaga kenyamanan bermain Anda setiap hari.
-                </p>
-            </div>
-
-            <!-- Grid Foto Anggota Tim dengan Efek Berputar 3D -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <!-- ANGGOTA 1: Operational Manager -->
-                <div class="group h-[320px] perspective-1000 cursor-pointer">
-                    <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-hover:rotate-y-180">
-
-                        <!-- SISI DEPAN (Foto & Nama) -->
-                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl border border-gray-100 bg-white shadow-xs overflow-hidden flex flex-col">
-                            <div class="w-full aspect-square overflow-hidden bg-gray-100">
-                                <img src="{{ asset('images/team_manager.jpg') }}" alt="Verno Akhdan" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-4 bg-gray-900 text-white flex-grow flex flex-col justify-center items-start text-left">
-                                <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Verno Akhdan</h4>
-                                <p class="text-[11px] text-red-400 font-medium mt-0.5">Operational Manager</p>
-                            </div>
-                        </div>
-
-                        <!-- SISI BELAKANG (Deskripsi Pekerjaan) -->
-                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-gray-900 border border-gray-800 text-white p-6 flex flex-col justify-center items-center shadow-md">
-                            <span class="material-icons text-red-500 text-3xl mb-2">manage_accounts</span>
-                            <h4 class="font-prompt text-sm font-bold text-red-400">Job Description</h4>
-                            <p class="font-roboto text-xs text-gray-300 text-center leading-relaxed mt-2">
-                                Bertanggung jawab penuh atas kelancaran operasional harian arena, manajemen staf, kontrol kualitas fasilitas, serta mengawasi validitas sistem integrasi transaksi reservasi.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- ANGGOTA 2: Event Organizer -->
-                <div class="group h-[320px] perspective-1000 cursor-pointer">
-                    <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-hover:rotate-y-180">
-
-                        <!-- SISI DEPAN -->
-                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl border border-gray-100 bg-white shadow-xs overflow-hidden flex flex-col">
-                            <div class="w-full aspect-square overflow-hidden bg-gray-100">
-                                <img src="{{ asset('images/team_event_organizer.jpg') }}" alt="Hyuda Santoso" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-4 bg-gray-900 text-white flex-grow flex flex-col justify-center items-start text-left">
-                                <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Hyuda Santoso</h4>
-                                <p class="text-[11px] text-red-400 font-medium mt-0.5">Event Organizer</p>
-                            </div>
-                        </div>
-
-                        <!-- SISI BELAKANG -->
-                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-gray-900 border border-gray-800 text-white p-6 flex flex-col justify-center items-center shadow-md">
-                            <span class="material-icons text-red-500 text-3xl mb-2">emoji_events</span>
-                            <h4 class="font-prompt text-sm font-bold text-red-400">Job Description</h4>
-                            <p class="font-roboto text-xs text-gray-300 text-center leading-relaxed mt-2">
-                                Menyusun, merencanakan, dan mengeksekusi kegiatan turnamen bulu tangkis maupun futsal komunitas, serta mengelola kerja sama sponsor untuk meramaikan event di Sport Center.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- ANGGOTA 3: Customer Service -->
-                <div class="group h-[320px] perspective-1000 cursor-pointer">
-                    <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-hover:rotate-y-180">
-
-                        <!-- SISI DEPAN -->
-                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl border border-gray-100 bg-white shadow-xs overflow-hidden flex flex-col">
-                            <div class="w-full aspect-square overflow-hidden bg-gray-100">
-                                <img src="{{ asset('images/team_customer_service.jpg') }}" alt="Budi Pratama" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-4 bg-gray-900 text-white flex-grow flex flex-col justify-center items-start text-left">
-                                <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Budi Pratama</h4>
-                                <p class="text-[11px] text-red-400 font-medium mt-0.5">Customer Service</p>
-                            </div>
-                        </div>
-
-                        <!-- SISI BELAKANG -->
-                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-gray-900 border border-gray-800 text-white p-6 flex flex-col justify-center items-center shadow-md">
-                            <span class="material-icons text-red-500 text-3xl mb-2">support_agent</span>
-                            <h4 class="font-prompt text-sm font-bold text-red-400">Job Description</h4>
-                            <p class="font-roboto text-xs text-gray-300 text-center leading-relaxed mt-2">
-                                Melayani keluhan, membantu kendala teknis pembuatan akun pelanggan, mengonfirmasi pengajuan verifikasi pembatalan, serta menyambut tim olahraga yang datang ke meja resepsionis.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- ANGGOTA 4: Maintenance Team -->
-                <div class="group h-[320px] perspective-1000 cursor-pointer">
-                    <div class="relative w-full h-full text-center transition-transform duration-500 transform-style-3d group-hover:rotate-y-180">
-
-                        <!-- SISI DEPAN -->
-                        <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl border border-gray-100 bg-white shadow-xs overflow-hidden flex flex-col">
-                            <div class="w-full aspect-square overflow-hidden bg-gray-100">
-                                <img src="{{ asset('images/team_cleanmain.png') }}" alt="Janitor" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-4 bg-gray-900 text-white flex-grow flex flex-col justify-center items-start text-left">
-                                <h4 class="font-prompt text-sm sm:text-base font-bold tracking-wide">Janitor & Technical Staff</h4>
-                                <p class="text-[11px] text-red-400 font-medium mt-0.5">Cleaning & Maintenance Team</p>
-                            </div>
-                        </div>
-
-                        <!-- SISI BELAKANG -->
-                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-gray-900 border border-gray-800 text-white p-6 flex flex-col justify-center items-center shadow-md">
-                            <span class="material-icons text-red-500 text-3xl mb-2">cleaning_services</span>
-                            <h4 class="font-prompt text-sm font-bold text-red-400">Job Description</h4>
-                            <p class="font-roboto text-xs text-gray-300 text-center leading-relaxed mt-2">
-                                Menjaga kebersihan total seluruh area lapangan, memastikan toilet steril, membersihkan debu lantai / rumput sehabis sesi tanding, serta pemeliharaan fasilitas lapangan agar tetap prima.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div> <!-- Penutup Max-w-7xl Inner -->
-</div> <!-- Penutup Konten Putih Belakang Banner -->
+    </div>
+</section>
 
 @endsection

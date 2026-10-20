@@ -10,6 +10,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/lapangan', [HomeController::class, 'lapangan'])->name('lapangan');
 Route::get('/lapangan/{id}', [HomeController::class, 'detail'])->name('lapangan.detail');
 Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
+Route::get('/tentang', [HomeController::class, 'tentang'])->name('tentang');
 Route::get('/pelajari', [HomeController::class, 'pelajari'])->name('pelajari');
 
 

@@ -4,95 +4,86 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lapangan;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FieldApiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): JsonResponse
     {
-        // mengambil semua data lapangan dari database
-        $fields = Lapangan::all();
+        $fields = Lapangan::query()
+            ->orderBy('id')
+            ->get();
 
-        // Mengembalikan data dalam bentuk format JSON standar REST API
         return response()->json([
             'success' => true,
-            'message' => 'Daftar data lapangan olahraga berhasil diambil.',
-            'data' => $fields
-        ], 200);
+            'message' => 'Daftar lapangan berhasil diambil.',
+            'data' => $fields,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        // menambah data baru
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|string',
+        $validated = $request->validate([
+            'nama_lapangan' => ['required', 'string', 'max:255'],
+            'jenis_lapangan' => ['required', 'string', 'in:Futsal,Badminton'],
+            'lokasi' => ['required', 'string', 'max:255'],
+            'harga_per_jam' => ['required', 'numeric', 'min:0'],
+            'deskripsi' => ['nullable', 'string'],
+            'fasilitas' => ['nullable', 'string'],
+            'ukuran' => ['nullable', 'string', 'max:100'],
+            'gambar' => ['nullable', 'string', 'max:255'],
+            'status_aktif' => ['sometimes', 'boolean'],
         ]);
 
-        // simpan ke database
-        $field = Lapangan::create([
-            'name' => $request->name,
-            'type' => $request->type,
+        $field = Lapangan::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Lapangan berhasil ditambahkan.',
+            'data' => $field,
+        ], 201);
+    }
+
+    public function show(Lapangan $field): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail lapangan berhasil diambil.',
+            'data' => $field,
+        ]);
+    }
+
+    public function update(Request $request, Lapangan $field): JsonResponse
+    {
+        $validated = $request->validate([
+            'nama_lapangan' => ['sometimes', 'required', 'string', 'max:255'],
+            'jenis_lapangan' => ['sometimes', 'required', 'string', 'in:Futsal,Badminton'],
+            'lokasi' => ['sometimes', 'required', 'string', 'max:255'],
+            'harga_per_jam' => ['sometimes', 'required', 'numeric', 'min:0'],
+            'deskripsi' => ['sometimes', 'nullable', 'string'],
+            'fasilitas' => ['sometimes', 'nullable', 'string'],
+            'ukuran' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'gambar' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'status_aktif' => ['sometimes', 'boolean'],
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Lapangan baru berhasil ditambahkan.',
-            'data' => $field
-        ], 201); 
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $field = Lapangan::find($id);
-
-        if (!$field) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
-        }
-
-        // perbarui data
-        $field->update($request->all());
+        $field->update($validated);
 
         return response()->json([
             'success' => true,
-            'message' => 'Data lapangan berhasil diperbarui.',
-            'data' => $field
-        ], 200);
+            'message' => 'Lapangan berhasil diperbarui.',
+            'data' => $field->refresh(),
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Lapangan $field): JsonResponse
     {
-        $field = Lapangan::find($id);
-
-        if (!$field) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
-        }
-
         $field->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Lapangan berhasil dihapus.'
-        ], 200);
+            'message' => 'Lapangan berhasil dihapus.',
+        ]);
     }
 }
